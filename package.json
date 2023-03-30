@@ -1,7 +1,9 @@
 {
   "name": "hypertest",
+  "description": "Hyperapp vite template",
+  "author": "bluejedi <jedi_biru@yahoo.co.uk>",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "files": [
     "dist",
@@ -21,5 +23,9 @@
   },
   "devDependencies": {
     "vite": "^4.0.4"
+  },
+  "dependencies": {
+    "hyperapp": "^2.0.22",
+    "hyperlit": "^0.3.6"
   }
 }
