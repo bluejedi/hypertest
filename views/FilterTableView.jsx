@@ -19,8 +19,8 @@ const FilterTableView = ({key, rowHeaders, rowColumns, formFields, title, extraV
     <div className="column col-lg-12" oncreate={() => actions.load(window.g_urls[key])}>
       <SearchForm
         formFields={mergeValuesErrors(formFields, state[key].forms.search, null)}
-        updateFieldAction={(key, value)=>actions.updateField({formname: 'search', fieldname: key, value})}
-        searchAction={actions.searchAction}
+        //updateFieldAction={(key, value)=>actions.updateField({formname: 'search', fieldname: key, value})}
+        //searchAction={actions.searchAction}
       />
       {state[key].loading == true ? <Spinner /> : <Table
         rowHeaders={checkAuth(rowHeaders, state.auth)}

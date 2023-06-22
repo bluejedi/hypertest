@@ -11,15 +11,19 @@ const okClick = (_, e) => {
   return false;
 };
 
-// const NavBar = () => (
-//     h("ul", {}, [
-//         h("li", {}, h("a", {href: "/"}, text("Home"))),
-//         h("li", {}, h("a", {href: "/settings"}, text("Settings"))),
-//         h("li", {}, h("a", {href: "/about"}, text("About"))),
-//         h("li", {}, h("a", {href: "/login"}, text("Login"))),
-//         h("li", {}, h("a", {href: "https://shish.io"}, text("External links are still external"))),
-//     ])
-// );
+//const updateField= ({formname, fieldname, value}) => (state, event) => ({...state, uname: value})
+//{
+        //console.log("Update ", formname, fieldname, value);
+//        ...state,
+//        uname: value
+        // return {
+        //     forms: Object.assign({}, state.auth.forms,  {
+        //         [formname]: Object.assign({}, state.auth.forms[formname], {
+        //             [fieldname]: value
+        //         })
+        //     })
+        // }
+//    };
 
 const NavBar = (state) => <ul>
   <li><a href="/">Home</a></li>
@@ -27,7 +31,7 @@ const NavBar = (state) => <ul>
   <li><a href="/about">About</a></li>
 </ul>
 
-const oninput= (state, event) => ({...state, uname: event.target.value})
+//const oninput= (state, event) => ({...state, uname: event.target.value})
 
 const login= (state) => {
     //actions.updateLoading(true);
@@ -60,15 +64,12 @@ const Login = (state, actions, g_actions) => <div className='container grid-xl' 
   <h2>Login</h2>
   <form method='POST'>
     <FormInput
-      field={{key:'uname', label:'Username', value: state.auth.forms.login.username, type:'text'}}
-      //action={value=>actions.updateField({formname: 'login', fieldname: 'username', value}) } 
-      //oninput={(state, event) => ({...state, uname: event.target.value})}
-      oninput={oninput}
+      field={{key:'uname', label:'Username', value: state.uname, type:'text'}}
+      action={value => (state, event) => ({...state, uname: value}) }
       />
     <FormInput
-      field={{key:'pass', label:'Password', value: state.auth.forms.login.password, type:'password'}}
-      //action={value=>actions.updateField({formname: 'login', fieldname: 'password', value}) } 
-      oninput={(state, event) => ({...state, pass: event.target.value})}
+      field={{key:'pass', label:'Password', value: state.pass, type:'password'}}
+      action={value => (state, event) => ({...state, pass: value}) }
     />
     {state.loading == true ? <Spinner /> : <button id='btn' name='btn' className='btn btn-primary' onclick={(_, event) => {event.preventDefault(); return [okClick, event]}}>Ok</button>}
   </form>

@@ -17,7 +17,8 @@ const Table = ({ rowHeaders, rowColumns, rows, actions }) => <div>
             }
         </tbody>
     </table>
-    <Pagination page={rows.page} next={rows.next} previous={rows.previous} loadAction={actions.load} />
+    <Pagination page={rows.page} next={rows.next} previous={rows.previous} //loadAction={actions.load} 
+    />
 </div>
 
 export default Table

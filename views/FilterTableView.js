@@ -1,10 +1,10 @@
 import { h } from "hyperapp"
-import { Spinner } from '../components/Spinners.js';
+import { Spinner } from '../components/Spinners.jsx';
 
-import Table from '../components/Table.js';
-import ModalForm from '../components/ModalForm.js';
-import SearchForm from '../components/SearchForm.js';
-import { mergeValuesErrors } from '../util/forms.js';
+import Table from '../components/Table.jsx';
+import ModalForm from '../components/ModalForm.jsx';
+import SearchForm from '../components/SearchForm.jsx';
+import { mergeValuesErrors } from '../util/forms.jsx';
 import { checkAuth } from '../util/auth';
 
 

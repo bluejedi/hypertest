@@ -6,6 +6,8 @@ import actions from './actions';
 import Login from './views/Login.jsx'; 
 import Home from './views/Home.jsx';
 import Movies from './views/Movies.jsx';
+import SimpleFilterTableView from './views/SimpleFilterTableView.jsx';
+import People from './views/People.jsx';
 import DebugContainer from './components/DebugContainer.jsx';
 
 // Define the different pages for our app
@@ -17,7 +19,7 @@ const NavBar = () => (
         h("li", {className: "tab-item"}, h("a", {href: "/people"}, text("People"))),
         h("li", {className: "tab-item"}, h("a", {href: "/jobs"}, text("Jobs"))),
         h("li", {className: "tab-item"}, h("a", {href: "/login"}, text("Login"))),
-        h("li", {className: "tab-item"}, h("a", {href: "https://shish.io"}, text("External links are still external"))),
+        //h("li", {className: "tab-item"}, h("a", {href: "https://shish.io"}, text("External links are still external"))),
     ])
 );
 
@@ -65,9 +67,9 @@ const FourOhFour = (state) => (
 const routes = {
     "/": Home,
     "/movies": Movies,
-    //"/people": People,
-    //"/genres": SimpleFilterTableView,
-    //"/jobs": SimpleFilterTableView,
+    "/people": People,
+    "/genres": SimpleFilterTableView,
+    "/jobs": SimpleFilterTableView,
     "/login": Login,
     "404": FourOhFour,
 };

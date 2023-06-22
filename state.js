@@ -16,8 +16,8 @@ const genericState = {
 const existingAuth = getExistingAuth()
 
 const state = {
-  uname: '',
-  pass: '',
+  uname: 'admin',
+  pass: 'xxx',
   url: window.location,
   auth: {
     key: existingAuth.key,
