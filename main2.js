@@ -23,26 +23,6 @@ const NavBar = () => (
     ])
 );
 
-const Root = (state) => (
-    h("main", {}, [
-        h("h1", {}, text("Welcome to The Thing!")),
-    ])
-);
-
-const Settings = (state) => (
-    h("main", {}, [
-        h("h1", {}, text("Set some things for The Thing!")),
-        NavBar(),
-    ])
-);
-
-const About = (state) => (
-    h("main", {}, [
-        h("h1", {}, text("About The Thing")),
-        NavBar(),
-    ])
-);
-
 const FourOhFour = (state) => (
     h("main", {}, [
         h("h1", {}, text(`This is the default page, because there is no handler for "${state.url.pathname}"`)),
@@ -54,16 +34,6 @@ const FourOhFour = (state) => (
 // onUrlChange handler simply sets state.url to the url. You could do more
 // complicated pattern matching and variable extraction in onUrlChange, but
 // this is just a demo.
-// const routes = {
-//     "/": Root,
-//     "/Movies": Settings,
-//     "/about": About,
-//     //"/login": Login(state.auth, actions.auth, actions),
-//     "/login": Login,
-//     //"/login": Login({state, "", ""}),
-//     "404": FourOhFour,
-// };
-
 const routes = {
     "/": Home,
     "/movies": Movies,
