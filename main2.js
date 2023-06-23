@@ -24,7 +24,7 @@ const NavBar = () => (
     ])
 );
 
-const FourOhFour = (state) => (
+const FourOhFour = ({key, title}) => (state) => (
     h("main", {}, [
         h("h1", {}, text(`This is the default page, because there is no handler for "${state.url.pathname}"`)),
         NavBar(),
@@ -46,9 +46,11 @@ const routes = {
 };
 
 const viewz = (state) => (
-    h("main", {className: "container grid-xl"}, [
+    h("main", {className: "container grid-xl p-2"}, [
         NavBar(),
-        (routes[state.url.pathname] ?? routes["404"])(state),
+        h("main", {className: "p-2"}, [
+            (routes[state.url.pathname] ?? routes["404"])(state),
+        ]),
         ToastContainer({toasts: state.toasts}),
         h("hr", {}),
           DebugContainer({state})

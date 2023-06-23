@@ -19,9 +19,9 @@ const formFields = [
 
 //const tit = 
 
-const SimpleFilterTableView = ({key, title}) => FilterTableView({
+const SimpleFilterTableView = ({key, title}) => (state, actions, g_actions) => FilterTableView({
 //const SimpleFilterTableView = (state) => FilterTableView({
-  key: 'jobs',
+  key: state.pathname,
   rowHeaders,
   rowColumns,
   formFields,

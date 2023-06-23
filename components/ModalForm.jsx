@@ -29,12 +29,12 @@ const ModalForm = ({ loading, formFields, item, hideAction, saveAction, updateFi
   <div class="modal-container">
     <div class="modal-header">
       <button class="btn btn-clear float-right" onclick={hideAction}></button>
-      <div class="modal-title h5">{item.id?`Editing form for item ${item.id}`:"Add new item!"}</div>
+      <div class="modal-title h5">"Add new item!"</div>
     </div>
     <div class="modal-body">
       <div class="content">
         <form method='POST'>
-          {renderFields(formFields, updateFieldAction)}
+          
         </form>
       </div>
     </div>

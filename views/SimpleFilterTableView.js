@@ -1,4 +1,4 @@
-//import { h } from "hyperapp"
+import { h } from "hyperapp"
 import FilterTableView from './FilterTableView.jsx';
 
 const rowHeaders = [
@@ -17,15 +17,19 @@ const formFields = [
   {'key': 'name', 'label': 'Name', 'type': 'text'},
 ];
 
-//const tit = 
+const key = 'jobs';
+const title = 'Jobs'; 
 
 //const SimpleFilterTableView = ({key, title}) => FilterTableView({
+//const SimpleFilterTableView = FilterTableView({
+
+//const SimpleFilterTableView = FilterTableView({
 const SimpleFilterTableView = FilterTableView({
-  key: 'jobs',
-  rowHeaders,
-  rowColumns,
-  formFields,
-  title: 'Jobs'
-})
+    key,
+    rowHeaders,
+    rowColumns,
+    formFields,
+    title
+  })
 
 export default SimpleFilterTableView;

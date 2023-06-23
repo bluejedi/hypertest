@@ -16,6 +16,9 @@ const genericState = {
 const existingAuth = getExistingAuth()
 
 const state = {
+  formsedit: null,
+  key: 'jobs',
+  title: 'Jobs',
   uname: 'admin',
   pass: 'xxx',
   url: window.location,
