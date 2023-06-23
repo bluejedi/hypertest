@@ -1,7 +1,6 @@
 //import { h } from "hyperapp"
 import FilterTableView from './FilterTableView.jsx';
-//onclick={()=>actions.updateEdit(Object.assign({}, item))}
-//(item, actions) => <button className='btn btn-block btn-primary'>Edit</button>
+
 const rowHeaders = [
   'Id',
   'Name',
@@ -11,19 +10,22 @@ const rowHeaders = [
 const rowColumns = [
   (item) => item.id,
   (item) => item.name,
-  (item) => <button className='btn btn-block btn-primary'>Edit</button>
+  (item, actions) => <button className='btn btn-block btn-primary'>Edit</button>
 ];
 
 const formFields = [
   {'key': 'name', 'label': 'Name', 'type': 'text'},
 ];
 
+//const tit = 
+
 const SimpleFilterTableView = ({key, title}) => FilterTableView({
-  key,
+//const SimpleFilterTableView = (state) => FilterTableView({
+  key: 'jobs',
   rowHeaders,
   rowColumns,
   formFields,
-  title
+  title: state.pathname
 })
 
 export default SimpleFilterTableView;

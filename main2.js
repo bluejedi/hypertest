@@ -6,9 +6,10 @@ import actions from './actions';
 import Login from './views/Login.jsx'; 
 import Home from './views/Home.jsx';
 import Movies from './views/Movies.jsx';
-import SimpleFilterTableView from './views/SimpleFilterTableView.jsx';
+import SimpleFilterTableView from './views/SimpleFilterTableView.js';
 import People from './views/People.jsx';
 import DebugContainer from './components/DebugContainer.jsx';
+import ToastContainer from './components/ToastContainer.jsx';
 
 // Define the different pages for our app
 const NavBar = () => (
@@ -45,13 +46,17 @@ const routes = {
 };
 
 const viewz = (state) => (
-    h("main", {}, [
+    h("main", {className: "container grid-xl"}, [
         NavBar(),
         (routes[state.url.pathname] ?? routes["404"])(state),
+        ToastContainer({toasts: state.toasts}),
         h("hr", {}),
           DebugContainer({state})
     ])
 );
+
+const ouc = (state, url) => ({ ...state, url: url });
+const our = (state, location) => [state, pushUrl(location.pathname)];
 
 // Create the app()
 app({
@@ -59,8 +64,8 @@ app({
     //view: (state) => (routes[state.url.pathname] ?? routes["404"])(state),
     view: viewz,
     subscriptions: state => [
-        onUrlChange((state, url) => ({ ...state, url: url })),
-        onUrlRequest((state, location) => [state, pushUrl(location.pathname)]),
+        onUrlChange(ouc),
+        onUrlRequest(our),
     ],
     node: document.getElementById("app"),
 });

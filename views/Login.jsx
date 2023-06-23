@@ -72,7 +72,7 @@ const Submitting = (state) => ({ ...state, inProgress: true });
 const SubmitLogin = (state) => [Submitting(state), login({ email: state.email, password: state.password })];
 const login = ({ email, password }) =>
   Http({
-    url: "http://localhost:8808/v1/system/login",
+    url: "http://localhost:8000/rest-auth/login/",
     options: {
       method: "POST",
       mode: "no-cors",
