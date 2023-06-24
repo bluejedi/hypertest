@@ -17,11 +17,6 @@ const existingAuth = getExistingAuth()
 
 const state = {
   formsedit: null,
-  key: 'jobs',
-  title: 'Jobs',
-  uname: 'admin',
-  pass: 'xxx',
-  url: window.location,
   auth: {
     key: existingAuth.key,
     username: existingAuth.username,
@@ -30,6 +25,11 @@ const state = {
       login: {}
     }
   },
+  key: 'jobs',
+  title: 'Jobs',
+  uname: 'admin',
+  pass: 'xxx',
+  url: window.location,
   //location: location.state,
   toasts: {
     items: []

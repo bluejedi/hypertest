@@ -2,6 +2,7 @@
 import Tabs from '../components/Tabs.jsx';
 import { FormInput } from '../components/FormInputs.jsx';
 import { Spinner } from '../components/Spinners.jsx';
+import auth from '../actions/auth.js';
 
 //const okClick = (e, actions, g_actions) => {
 const okClick = (_, e, actions, g_actions) => {
@@ -95,14 +96,24 @@ const NavBar = (state) => <ul>
 //const Login = (state, actions, g_actions) => <div key='login'>
 const Login = (state, actions, g_actions) => <div className='container grid-xl' key='login'>
   <h2>Login</h2>
-  <form onsubmit={(_, event) => {event.preventDefault(); return SubmitLogin}}>
+  <form onsubmit={(_, event) => {event.preventDefault(); return [auth.login, 'http://localhost:8000/rest-auth/login/']}}>
     <FormInput
       field={{key:'uname', label:'Username', value: state.uname, type:'text'}}
-      action={value => (state, event) => ({...state, uname: value}) }
+      action={value => (state, event) => ({...state, uname: value, 
+        auth:{...state.auth, 
+          forms:{...state.auth.forms, 
+            login:{...state.auth.forms.login,
+             username: value}}}
+      })}
       />
     <FormInput
       field={{key:'pass', label:'Password', value: state.pass, type:'password'}}
-      action={value => (state, event) => ({...state, pass: value}) }
+      action={value => (state, event) => ({...state, uname: value, 
+        auth:{...state.auth, 
+          forms:{...state.auth.forms, 
+            login:{...state.auth.forms.login,
+             password: value}}}
+      })}
     />
     {state.loading == true ? <Spinner /> : <button id='btn' name='btn' className='btn btn-primary'>Ok</button>}
   </form>
