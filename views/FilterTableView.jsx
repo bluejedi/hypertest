@@ -9,11 +9,11 @@ import { checkAuth } from '../util/auth';
 import Viewz from "./Layout.jsx";
 import actions from "../actions/index.js";
 
-const updateEdit= item => state => ({
-    forms: Object.assign({}, state['forms'], {
-      edit: item
-    })
-  });
+// const updateEdit= item => state => ({
+//     forms: Object.assign({}, state['forms'], {
+//       edit: item
+//     })
+//   });
 
 const load= (url, key) => (state, actions) => [
     {...state, loading: true},
@@ -26,6 +26,7 @@ const load= (url, key) => (state, actions) => [
 
 const update= (state, {key, response, current, page}) => ({
     ...state,
+    loading: false,
     [key]: {...state[key],
       loading: false,
       page,
@@ -37,7 +38,32 @@ const update= (state, {key, response, current, page}) => ({
     }    
   });
 
-const FilterTableView = ({key, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
+const updateEdit= (key, row) => (state) => {
+  console.log(key);
+  console.log('masuk');
+return ({
+  ...state,
+  loading: true,
+  [key]: {...state[key],
+    forms: {...state[key].forms,
+  //forms: Object.assign({}, state['forms'], {
+    edit: 'babix',
+    search: row
+  }}
+  //})
+})};
+
+// const updateEdit= (state, {key, row}) => ({
+//   ...state,
+//   dodol: row,
+//   [key]: {...state[key],
+//     //forms: {...state[key].forms,
+//     edit: 'babix',
+//     dodol: 'dodol'}
+//   //}}
+// });
+
+const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 <Viewz key={state.auth.key} username={state.auth.username}>
 <div key={key}>
   <h2>
@@ -60,18 +86,34 @@ const FilterTableView = ({key, rowHeaders, rowColumns, formFields, title, extraV
         rowHeaders={checkAuth(rowHeaders, state.auth)}
         rowColumns={checkAuth(rowColumns, state.auth)}
         rows={state[key]}
-        actions={actions}
+        actions={(row) => ({...state,  
+          [key]:{...state[key],
+            //loading: true,
+            forms:{...state[key].forms,
+              edit:row
+            }}
+        })
+      }
       />}
     </div>
   </div>
-  {state[key].forms.edit?<ModalForm
+  
+    <ModalForm
     loading={state[key].loading}
-    //formFields={mergeValuesErrors(formFields, state[key].forms.edit, state[key].forms.edit.errors)}
+    formFields={formFields && state[key].forms.edit && mergeValuesErrors(formFields, state[key].forms.edit, state[key].forms.edit.errors)}
     item={state[key].forms.edit}
-    hideAction={()=>actions.updateEdit(null)}
+    hideAction={(row) => ({...state,  
+          [key]:{...state[key],
+            //loading: true,
+            forms:{...state[key].forms,
+              edit:null
+            }}
+        })
+      }
     saveAction={()=>actions.saveEdit({g_actions: g_actions, key: state.auth.key})}
     updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: key, value})}
-  />:null}
+  />
+  
   {extraViews?extraViews.map( ev => ev(state, actions)):null}
 </div>
 </Viewz>

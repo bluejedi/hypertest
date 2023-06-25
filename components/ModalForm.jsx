@@ -6,6 +6,7 @@ import { SpinnerSmall } from './Spinners.jsx'
 
 
 const renderField = (field, updateFieldAction ) => {
+  console.log(field);
   let ftype = undefined;
   switch(field.type) {
     case 'longtext': ftype = FormInputLong; break;
@@ -34,7 +35,7 @@ const ModalForm = ({ loading, formFields, item, hideAction, saveAction, updateFi
     <div class="modal-body">
       <div class="content">
         <form method='POST'>
-          
+          {formFields && renderFields(formFields, updateFieldAction)}
         </form>
       </div>
     </div>

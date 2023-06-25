@@ -13,7 +13,8 @@ const Table = ({ rowHeaders, rowColumns, rows, actions }) => <div>
         </tr></thead>
         <tbody>
             {
-                rows.items.map(z => <Row row={z} rowColumns={rowColumns} actions={actions}/>)
+                rows.items.map(z => <Row row={z} rowColumns={rowColumns} actions={actions
+                }/>)
             }
         </tbody>
     </table>

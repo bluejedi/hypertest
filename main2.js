@@ -42,6 +42,16 @@ const FourOhFour = ({key, title}) => (state) => (
     ])
 );
 
+const updateEdit= (state, items) => ({
+  ...state,
+  [key]: {...state[key],
+    forms: {...state[key].forms,
+  //forms: Object.assign({}, state['forms'], {
+    edit: items
+  }}
+  //})
+});
+
 // This 1:1 mapping of paths to pages is a super-simple approach, where our
 // onUrlChange handler simply sets state.url to the url. You could do more
 // complicated pattern matching and variable extraction in onUrlChange, but
@@ -51,7 +61,7 @@ const routes = {
     "/movies": Movies,
     "/people": People,
     "/genres": SimpleFilterTableView(state, {key: "genres", title: "Genres"}),
-    "/jobs": SimpleFilterTableView(state, {key: "jobs", title: "Jobs"}),
+    "/jobs": SimpleFilterTableView(state, {key: "jobs", title: "Jobs", actions: {updateEdit}}),
     "/login": Login,
     "404": FourOhFour,
 };

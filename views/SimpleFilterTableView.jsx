@@ -11,12 +11,22 @@ const rowHeaders = [
 const rowColumns = [
   (item) => item.id,
   (item) => item.name,
-  (item, actions) => <button className='btn btn-block btn-primary'>Edit</button>
+  (item, actions) => <button className='btn btn-block btn-primary' onclick={(z) => actions(item)}>Edit</button>
 ];
 
 const formFields = [
   {'key': 'name', 'label': 'Name', 'type': 'text'},
 ];
+
+// const updateEdit= (state, items) => ({
+//   ...state,
+//   [key]: {...state[key],
+//     forms: {...state[key].forms,
+//   //forms: Object.assign({}, state['forms'], {
+//     edit: items
+//   }}
+//   //})
+// });
 
 //const key = 'jobs';
 //const title = 'Jobs'; 
@@ -26,7 +36,8 @@ const SimpleFilterTableView = (state, props) => FilterTableView({
     rowHeaders,
     rowColumns,
     formFields,
-    title: props.title
+    title: props.title,
+    actions: (row) => updateEdit(row)
   })
 
 export default SimpleFilterTableView;

@@ -16,6 +16,26 @@ const genericState = {
 const existingAuth = getExistingAuth()
 
 const state = {
+  rowz: null,
+  //jobs: Object.assign({}, genericState),
+  jobs: {
+    loading: false,
+    page: null,
+    count: 0,
+    next: null,
+    previous: null,
+    items: [
+        {
+            "url": "http://localhost:8000/api/jobs/1/",
+            "id": 1,
+            "name": "blow"
+        }
+    ],
+    forms: {
+      edit: null,
+      search: {}
+    }
+  },
   formsedit: null,
   auth: {
     key: existingAuth.key,
@@ -41,8 +61,7 @@ const state = {
     })
   }),
   people: Object.assign({}, genericState),
-  genres: Object.assign({}, genericState),
-  jobs: Object.assign({}, genericState)
+  genres: Object.assign({}, genericState)
 };
 
 export default state;
