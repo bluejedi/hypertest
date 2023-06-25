@@ -1,7 +1,7 @@
 import { h, text, app } from "hyperapp";
 import { onUrlChange, onUrlRequest, pushUrl } from "@shish2k/hyperapp-navigation";
 import state from './state.js';
-import actions from './actions';
+//import actions from './actions';
 //import updateField from './actions/forms.js';
 import Login from './views/Login.jsx'; 
 import Home from './views/Home.jsx';
@@ -20,6 +20,11 @@ const NavBar = () => (
         h("li", {className: "tab-item"}, h("a", {href: "/people"}, text("People"))),
         h("li", {className: "tab-item"}, h("a", {href: "/jobs"}, text("Jobs"))),
         h("li", {className: "tab-item"}, h("a", {href: "/login"}, text("Login"))),
+        state.auth.key ? (h("div", {}, [
+            h("span", {className: "chip"}, text(state.auth.username)),
+            h("button", {class: "btn" }, text("Logout"))]))
+            : h("li", {className: "tab-item"}, h("a", {href: "/login"}, text("Login")))
+        
         //h("li", {className: "tab-item"}, h("a", {href: "https://shish.io"}, text("External links are still external"))),
     ])
 );

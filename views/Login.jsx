@@ -98,8 +98,8 @@ const Login = (state, actions, g_actions) => <div className='container grid-xl' 
   <h2>Login</h2>
   <form onsubmit={(_, event) => {event.preventDefault(); return [auth.login, 'http://localhost:8000/rest-auth/login/']}}>
     <FormInput
-      field={{key:'uname', label:'Username', value: state.uname, type:'text'}}
-      action={value => (state, event) => ({...state, uname: value, 
+      field={{key:'uname', label:'Username', value: state.auth.forms.login.username, type:'text'}}
+      action={value => (state, event) => ({...state,  
         auth:{...state.auth, 
           forms:{...state.auth.forms, 
             login:{...state.auth.forms.login,
@@ -107,8 +107,8 @@ const Login = (state, actions, g_actions) => <div className='container grid-xl' 
       })}
       />
     <FormInput
-      field={{key:'pass', label:'Password', value: state.pass, type:'password'}}
-      action={value => (state, event) => ({...state, uname: value, 
+      field={{key:'pass', label:'Password', value: state.auth.forms.login.password, type:'password'}}
+      action={value => (state, event) => ({...state,  
         auth:{...state.auth, 
           forms:{...state.auth.forms, 
             login:{...state.auth.forms.login,

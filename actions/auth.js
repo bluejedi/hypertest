@@ -74,16 +74,17 @@ const auth = {
     dispatch => {                           // <---
       fetch(g_urls.login, {
         method: 'POST',
+        //mode: "no-cors",
         body: JSON.stringify({
           username: state.auth.forms.login.username,
           password: state.auth.forms.login.password,
         }),
         headers: {
-          'content-type': 'application/json'
+          'Content-Type': 'application/json'
         }
       })
       .then(response => response.json())
-      .then(data => dispatch(actions.updateLogin, {key: data.key, username: state.forms.login.username})) // <---
+      .then(data => dispatch([auth.updateLogin, {key: data.key, username: state.auth.forms.login.username}])) // <---
     }
     // fetch(g_urls.login, {
     //   method: 'POST',
@@ -125,11 +126,14 @@ const auth = {
     loading: loading
   }),
 
-  updateLogin: ({key, username}) => state => [{
+  updateLogin: (state, {key, username}) => [{
     ...state,
     loading: false,
-    key,
-    username
+    auth: {...state.auth, 
+      key,
+      username
+    }
+    
     // forms: {
     //   login: {}
     // }
@@ -142,7 +146,7 @@ const auth = {
     //   }
     // }
     }, 
-    dispatch => {localStorage.setItem("auth", JSON.stringify({key, username}))}
+    localStorage.setItem("auth", JSON.stringify({key, username}))
   ],
 
   updateField

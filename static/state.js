@@ -25,7 +25,7 @@ const state = {
       login: {}
     }
   },
-  pkey: 'jobs',
+  key: 'jobs',
   title: 'Jobs',
   uname: 'admin',
   pass: 'xxx',
