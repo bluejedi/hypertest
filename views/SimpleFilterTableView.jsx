@@ -18,15 +18,15 @@ const formFields = [
   {'key': 'name', 'label': 'Name', 'type': 'text'},
 ];
 
-//const tit = 
+//const key = 'jobs';
+//const title = 'Jobs'; 
 
-const SimpleFilterTableView = ({key, title}) => (state, actions, g_actions) => FilterTableView({
-//const SimpleFilterTableView = (state) => FilterTableView({
-  key: state.pathname,
-  rowHeaders,
-  rowColumns,
-  formFields,
-  title: state.pathname
-})
+const SimpleFilterTableView = (state, props) => FilterTableView({
+    key: props.key,
+    rowHeaders,
+    rowColumns,
+    formFields,
+    title: props.title
+  })
 
 export default SimpleFilterTableView;

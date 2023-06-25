@@ -6,7 +6,7 @@ import state from './state.js';
 import Login from './views/Login.jsx'; 
 import Home from './views/Home.jsx';
 import Movies from './views/Movies.jsx';
-import SimpleFilterTableView from './views/SimpleFilterTableView.js';
+import SimpleFilterTableView from './views/SimpleFilterTableView.jsx';
 import People from './views/People.jsx';
 import DebugContainer from './components/DebugContainer.jsx';
 import ToastContainer from './components/ToastContainer.jsx';
@@ -50,18 +50,18 @@ const routes = {
     "/": Home,
     "/movies": Movies,
     "/people": People,
-    "/genres": SimpleFilterTableView,
-    "/jobs": SimpleFilterTableView,
+    "/genres": SimpleFilterTableView(state, {key: "genres", title: "Genres"}),
+    "/jobs": SimpleFilterTableView(state, {key: "jobs", title: "Jobs"}),
     "/login": Login,
     "404": FourOhFour,
 };
 
 //const viewz = (state) => ((routes[state.url.pathname] ?? routes["404"])(state));
-const viewz = (state) => (
+const viewz = (state, props) => (
     h("main", {className: "container grid-xl p-2"}, [
        //NavBar({onlogout: okClick}),
        h("main", {className: "p-2"}, [
-            (routes[state.url.pathname] ?? routes["404"])(state),
+            (routes[state.url.pathname] ?? routes["404"])(state, props),
        ]),
         ToastContainer({toasts: state.toasts}),
        h("hr", {}),

@@ -1,6 +1,10 @@
 import { h } from "hyperapp"
 import FilterTableView from './FilterTableView.jsx';
 
+//const actions = createViewActions(window.g_urls.genres);
+
+//console.log(actions);
+
 const rowHeaders = [
   'Id',
   'Name',
@@ -20,10 +24,6 @@ const formFields = [
 const key = 'jobs';
 const title = 'Jobs'; 
 
-//const SimpleFilterTableView = ({key, title}) => FilterTableView({
-//const SimpleFilterTableView = FilterTableView({
-
-//const SimpleFilterTableView = FilterTableView({
 const SimpleFilterTableView = FilterTableView({
     key,
     rowHeaders,
