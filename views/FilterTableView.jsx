@@ -6,6 +6,7 @@ import ModalForm from '../components/ModalForm.jsx';
 import SearchForm from '../components/SearchForm.jsx';
 import { mergeValuesErrors } from '../util/forms.js';
 import { checkAuth } from '../util/auth';
+import Viewz from "./Layout.jsx"
 
 // const updateEdit= item => state => ({
 //     ...state,
@@ -22,6 +23,7 @@ const updateEdit= (state, item) => ({
 
 
 const FilterTableView = ({key, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
+<Viewz key={state.auth.key} username={state.auth.username}>
 <div key={key}>
   <h2>
     {title || state.url.pathname} &nbsp;  &nbsp;
@@ -54,6 +56,7 @@ const FilterTableView = ({key, rowHeaders, rowColumns, formFields, title, extraV
     updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: key, value})}
   />:null}
   {extraViews?extraViews.map( ev => ev(state, actions)):null}
-</div>;
+</div>
+</Viewz>
 
 export default FilterTableView

@@ -1,5 +1,6 @@
 //import { h } from "hyperapp"
 import FilterTableView from './FilterTableView.jsx';
+import Viewz from "./Layout.jsx"
 
 const rowHeaders = [
   'Id',

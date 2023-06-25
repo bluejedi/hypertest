@@ -1,5 +1,5 @@
 import updateField from './forms.js';
-
+import { onUrlChange, onUrlRequest, pushUrl } from "@shish2k/hyperapp-navigation";
 
 const auth = {
   login: g_actions => (state, actions) => [
@@ -40,7 +40,8 @@ const auth = {
       key,
       username
     }}, 
-    localStorage.setItem("auth", JSON.stringify({key, username}))
+    localStorage.setItem("auth", JSON.stringify({key, username})),
+    pushUrl('/')
   ],
 
   updateField

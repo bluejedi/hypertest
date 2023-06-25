@@ -3,6 +3,7 @@ import Tabs from '../components/Tabs.jsx';
 import { FormInput } from '../components/FormInputs.jsx';
 import { Spinner } from '../components/Spinners.jsx';
 import auth from '../actions/auth.js';
+import Viewz from "./Layout.jsx"
 
 const okClick = (_, event) => {
   event.preventDefault(); 
@@ -16,7 +17,9 @@ const NavBar = (state) => <ul>
 </ul>
 
 //const Login = (state, actions, g_actions) => <div key='login'>
-const Login = (state, actions, g_actions) => <div className='container grid-xl' key='login'>
+const Login = (state, actions, g_actions) => 
+<Viewz key={state.auth.key} username={state.auth.username}>
+<div className='container grid-xl' key='login'>
   <h2>Login</h2>
   <form onsubmit={okClick}>
     <FormInput
@@ -39,6 +42,7 @@ const Login = (state, actions, g_actions) => <div className='container grid-xl' 
     />
     {state.loading == true ? <Spinner /> : <button id='btn' name='btn' className='btn btn-primary'>Ok</button>}
   </form>
-</div>;
+</div>
+</Viewz>
 
 export default Login;

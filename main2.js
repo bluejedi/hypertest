@@ -56,15 +56,16 @@ const routes = {
     "404": FourOhFour,
 };
 
+//const viewz = (state) => ((routes[state.url.pathname] ?? routes["404"])(state));
 const viewz = (state) => (
     h("main", {className: "container grid-xl p-2"}, [
-        NavBar({onlogout: okClick}),
-        h("main", {className: "p-2"}, [
+       //NavBar({onlogout: okClick}),
+       h("main", {className: "p-2"}, [
             (routes[state.url.pathname] ?? routes["404"])(state),
-        ]),
+       ]),
         ToastContainer({toasts: state.toasts}),
-        h("hr", {}),
-          DebugContainer({state})
+       h("hr", {}),
+         DebugContainer({state})
     ])
 );
 
