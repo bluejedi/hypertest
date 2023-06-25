@@ -4,88 +4,10 @@ import { FormInput } from '../components/FormInputs.jsx';
 import { Spinner } from '../components/Spinners.jsx';
 import auth from '../actions/auth.js';
 
-//const okClick = (e, actions, g_actions) => {
-const okClick = (_, e, actions, g_actions) => {
-  login(g_actions);
-  console.log(e);
-  e.preventDefault();
-  return false;
-};
-const API_ROOT = "/v1";
-//UserSuccess = (state, { token }) => [{ ...state, user: genUser(token) }, SaveUser(genUser(token)), Redirect({ path: HOME })];
-
-const UserSuccess = (state, { token }) => ({...state, pass: state.pass})
-
-function httpEffect(dispatch, props) {
-  return fetch(props.url, props.options)
-    .then(function(response) {
-      if (!response.ok) {
-        throw response
-      }
-      return response
-    })
-    .then(function(response) {
-      return response[props.response]()
-    })
-    .then(function(result) {
-      dispatch(props.action, result);
-    })
-    .catch(function(error) {
-      if (props.errorResponse) {
-        console.log(props.errorResponse);
-        return error[props.errorResponse]()
-          .then(function(result) {
-            dispatch(props.error, result);
-          })
-          .catch(function(error) {
-            dispatch(props.error, error);
-          })
-      } else {
-        dispatch(props.error, error);
-      }
-    })
+const okClick = (_, event) => {
+  event.preventDefault(); 
+  return [auth.login, auth]
 }
-
-function assign(source, assignments) {
-  var result = {},
-    i;
-  for (i in source) result[i] = source[i];
-  for (i in assignments) result[i] = assignments[i];
-  return result
-}
-
-function Http(props) {
-  return [
-    httpEffect,
-    assign(
-      {
-        options: {},
-        response: "json",
-        error: props.action
-      },
-      props
-    )
-  ]
-}
-
-const Submitting = (state) => ({ ...state, inProgress: true });
-
-const SubmitLogin = (state) => [Submitting(state), login({ email: state.email, password: state.password })];
-const login = ({ email, password }) =>
-  Http({
-    url: "http://localhost:8000/rest-auth/login/",
-    options: {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user: { email, password } }),
-    },
-    errorResponse: "json",
-    action: UserSuccess,
-    //error: FormError,
-  });
 
 const NavBar = (state) => <ul>
   <li><a href="/">Home</a></li>
@@ -96,7 +18,7 @@ const NavBar = (state) => <ul>
 //const Login = (state, actions, g_actions) => <div key='login'>
 const Login = (state, actions, g_actions) => <div className='container grid-xl' key='login'>
   <h2>Login</h2>
-  <form onsubmit={(_, event) => {event.preventDefault(); return [auth.login, 'http://localhost:8000/rest-auth/login/']}}>
+  <form onsubmit={okClick}>
     <FormInput
       field={{key:'uname', label:'Username', value: state.auth.forms.login.username, type:'text'}}
       action={value => (state, event) => ({...state,  

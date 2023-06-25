@@ -10,22 +10,28 @@ import SimpleFilterTableView from './views/SimpleFilterTableView.js';
 import People from './views/People.jsx';
 import DebugContainer from './components/DebugContainer.jsx';
 import ToastContainer from './components/ToastContainer.jsx';
+import auth from './actions/auth.js';
+
+const okClick = (_, event) => {
+  event.preventDefault(); 
+  return [auth.logout, auth]
+}
 
 // Define the different pages for our app
-const NavBar = () => (
-    h("ul", {className: "tab tab-block"}, [
-        h("li", {className: "tab-item"}, h("a", {href: "/"}, text("Home"))),
-        h("li", {className: "tab-item"}, h("a", {href: "/movies"}, text("Movies"))),
-        h("li", {className: "tab-item"}, h("a", {href: "/genres"}, text("Genres"))),
-        h("li", {className: "tab-item"}, h("a", {href: "/people"}, text("People"))),
-        h("li", {className: "tab-item"}, h("a", {href: "/jobs"}, text("Jobs"))),
-        h("li", {className: "tab-item"}, h("a", {href: "/login"}, text("Login"))),
+const NavBar = (props) => (
+    h("ul", {class: "tab tab-block"}, [
+        h("li", {class: "tab-item"}, h("a", {href: "/"}, text("Home"))),
+        h("li", {class: "tab-item"}, h("a", {href: "/movies"}, text("Movies"))),
+        h("li", {class: "tab-item"}, h("a", {href: "/genres"}, text("Genres"))),
+        h("li", {class: "tab-item"}, h("a", {href: "/people"}, text("People"))),
+        h("li", {class: "tab-item"}, h("a", {href: "/jobs"}, text("Jobs"))),
+        //h("li", {class: "tab-item"}, h("a", {href: "/login"}, text("Login"))),
         state.auth.key ? (h("div", {}, [
-            h("span", {className: "chip"}, text(state.auth.username)),
-            h("button", {class: "btn" }, text("Logout"))]))
-            : h("li", {className: "tab-item"}, h("a", {href: "/login"}, text("Login")))
+            h("span", {class: "chip"}, text(state.auth.username)),
+            h("button", {class: "btn", onclick: props.onlogout}, text("Logout"))]))
+            : h("li", {class: "tab-item"}, h("a", {href: "/login"}, text("Login")))
         
-        //h("li", {className: "tab-item"}, h("a", {href: "https://shish.io"}, text("External links are still external"))),
+        //h("li", {class: "tab-item"}, h("a", {href: "https://shish.io"}, text("External links are still external"))),
     ])
 );
 
@@ -52,7 +58,7 @@ const routes = {
 
 const viewz = (state) => (
     h("main", {className: "container grid-xl p-2"}, [
-        NavBar(),
+        NavBar({onlogout: okClick}),
         h("main", {className: "p-2"}, [
             (routes[state.url.pathname] ?? routes["404"])(state),
         ]),
