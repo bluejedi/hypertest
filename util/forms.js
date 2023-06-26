@@ -1,6 +1,7 @@
 
 export const mergeValuesErrors = (formFields, item, errors) => {
-    //console.log(item);
+    console.log(formFields);
+    console.log(item);
     return formFields.map(f => Object.assign({}, f, {
         'value': item[f.key]
     }, errors?{

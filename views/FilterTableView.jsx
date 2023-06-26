@@ -50,6 +50,31 @@ return ({
     edit: forms.edit
 })};
 
+const searchAction= (reset) => (state) => {
+  console.log(reset);
+  return ({...state, url: window.location})
+}
+
+// const searchAction= (reset) => (state, actions) => {
+//   if(reset) {
+//       load(state.current.split('?')[0]);
+//       return {
+//           forms: Object.assign({}, state['forms'], {
+//           search: {}
+//           })
+//       };
+//   } else {
+//       ({...state, url: window.location}),
+
+//       {let params = Object.keys(state.forms.search).map(function(k) {
+//                 return encodeURIComponent(k) + '=' + encodeURIComponent(state.forms.search[k])
+//             }).join('&');
+//             state.url = window.location;
+//             console.log(state.current);
+//             load(state.current.split('?')[0]+'?'+params)};
+//   }
+// };
+
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 <Viewz key={state.auth.key} username={state.auth.username}>
 <div key={key}>
@@ -66,8 +91,17 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     <div className="column col-lg-12" oncreate={load(window.g_urls[key])}>
       <SearchForm
         formFields={mergeValuesErrors(formFields, state[key].forms.search, null)}
-        //updateFieldAction={(key, value)=>actions.updateField({formname: 'search', fieldname: key, value})}
-        //searchAction={actions.searchAction}
+        // updateFieldAction={(key, value)=>actions.updateField({formname: 'search', fieldname: key, value})}
+        updateFieldAction={(keyz, value) => (state, event) => ({...state,  
+                [key]:{...state[key], 
+                    forms:{...state[key].forms, 
+                      search:{...state[key].forms.search,
+                       fieldname: keyz, value}}}
+                })}
+        searchAction={(reset) => (state, event) => {
+          console.log(reset);
+          return ({...state, url: window.location})
+        }}
       />
       {state[key].loading == true ? <Spinner /> : <Table
         rowHeaders={checkAuth(rowHeaders, state.auth)}

@@ -21,13 +21,15 @@ const SearchForm = ({ loading, formFields, searchAction, updateFieldAction }) =>
             formFields.map(f => <div key={f.key}>    
                 <label class="form-label" for={f.key}>{f.label}</label>
                 <input class="form-input" type={f.type} id={f.key} placeholder={f.label} value={f.value} 
-                    oninput={e => updateFieldAction (f.key,  e.target.value)}
+                    oninput={                        
+                        (_,e) => updateFieldAction(f.key,  e.target.value)
+                    }
                 />
             </div>)
         }
         {loading?<SpinnerSmall />:<div  >
-            <button style={{marginTop: '2.3em'}}  class="btn ml-2 btn-primary" onclick={e => {e.preventDefault(); searchAction(); return false; }}>Filter</button>
-            <button style={{'margin-top': '2.3em'}} class="btn ml-2" onclick={e => {e.preventDefault(); searchAction(true); return false; }} >Reset</button>
+            <button style={{marginTop: '2.3em'}}  class="btn ml-2 btn-primary" onclick={(_,e) => {e.preventDefault(); searchAction(); return false; }}>Filter</button>
+            <button style={{'margin-top': '2.3em'}} class="btn ml-2" onclick={(_,e) => {e.preventDefault(); searchAction(true); return false; }} >Reset</button>
         </div>}
     </div>
 </form>

@@ -28,7 +28,7 @@ var jobs = {
         },
         {
             "url": "http://localhost:8000/api/jobs/2/",
-            "id": 1,
+            "id": 2,
             "name": "job 2"
         }
     ]
