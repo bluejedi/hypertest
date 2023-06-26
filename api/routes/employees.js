@@ -103,7 +103,18 @@ exports.logout = function (req, res, next) {
 
 exports.findAllJob = function (req, res, next) {
     //pagina_wrapper(jobs);
-    res.send(pagina_wrapper(jobs));
+    var name = req.query.name;
+    if (name) {
+        res.send(pagina_wrapper(jobs.filter(function(job) {
+            return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        })));
+        // res.send(jobs.filter(function(job) {
+        //     return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        // }));
+    } else {
+        res.send(pagina_wrapper(jobs));
+    }
+    //res.send(pagina_wrapper(jobs));
 };
 
 exports.findAllGenre = function (req, res, next) {

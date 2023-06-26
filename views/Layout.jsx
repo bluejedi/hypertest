@@ -32,7 +32,7 @@ const Viewz = (props, content) => <div>
         <div class="accordion-body p2 mx-2">
         <ul class="menu text-left">
             
-            <li class="divider" data-content="Profile"></li>
+            <li class="divider" data-content="Menu"></li>
             <li class="menu-item">
                 <a href="#" onclick={okClick}>
                   <i class="icon icon-apps"></i> Settings
@@ -53,12 +53,7 @@ const Viewz = (props, content) => <div>
         <div class="accordion-body p2 mx-2">
         <ul class="menu text-left">
             
-            <li class="divider" data-content="Profile"></li>
-            <li class="menu-item">
-                <a href="#" onclick={okClick}>
-                  <i class="icon icon-apps"></i> Settings
-                </a>
-            </li>
+            <li class="divider" data-content="Menu"></li>
             <li class="menu-item">
                 <a href="/register" >
                   <i class="icon icon-link"></i> Register

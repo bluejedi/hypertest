@@ -16,7 +16,7 @@ import actions from "../actions/index.js";
 //   });
 
 const load= (url, key) => (state, actions) => [
-    {...state, loading: true},
+    {...state, loading: true, url: window.location},
     dispatch => {                           // <---
       fetch(url)
       .then(response => response.json())
@@ -50,30 +50,24 @@ return ({
     edit: forms.edit
 })};
 
-const searchAction= (reset) => (state) => {
-  console.log(reset);
-  return ({...state, url: window.location})
-}
+// const searchAction= (reset) => (state) => {
+//   console.log(reset);
+//   return ({...state, url: window.location})
+// }
 
-// const searchAction= (reset) => (state, actions) => {
-//   if(reset) {
-//       load(state.current.split('?')[0]);
-//       return {
-//           forms: Object.assign({}, state['forms'], {
-//           search: {}
-//           })
-//       };
-//   } else {
-//       ({...state, url: window.location}),
+const searchAction= (reset) => (state, actions) => {
+  if(reset) {
+      load(state.current.split('?')[0]);
+      return {
+          forms: Object.assign({}, state['forms'], {
+          search: {}
+          })
+      };
+  } else [
+      ({...state, url: window.location}),
+      ()=>load(window.g_urls[key] + '?' + state.forms.search.value, key)]
+};
 
-//       {let params = Object.keys(state.forms.search).map(function(k) {
-//                 return encodeURIComponent(k) + '=' + encodeURIComponent(state.forms.search[k])
-//             }).join('&');
-//             state.url = window.location;
-//             console.log(state.current);
-//             load(state.current.split('?')[0]+'?'+params)};
-//   }
-// };
 
 //const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) =>
@@ -87,22 +81,30 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     <button className="btn btn-primary btn-action btn-lg" onclick={()=>load(window.g_urls[key], key)}>
       <i className="icon icon-refresh"></i>
     </button>
+    <button className="btn btn-primary btn-action btn-lg" onclick={()=>load(window.g_urls[key] + '?name=' + state[key].forms.search.name, key)}>
+      <i className="icon icon-apps"></i>
+    </button>
   </h2>
   <div className="columns">
     <div className="column col-lg-12" oncreate={()=>load(window.g_urls[key], key)}>
       <SearchForm
-        formFields={mergeValuesErrors(formFields, state[key].forms.search, null)}
+        formFields={formFields && state[key].forms.search && mergeValuesErrors(formFields, state[key].forms.search, state[key].forms.search.errors)}
         // updateFieldAction={(key, value)=>actions.updateField({formname: 'search', fieldname: key, value})}
-        updateFieldAction={(keyz, value) => (state, event) => ({...state,  
+        updateFieldActionz={(keyz, value) => ({...state,  
                 [key]:{...state[key], 
                     forms:{...state[key].forms, 
                       search:{...state[key].forms.search,
                        fieldname: keyz, value}}}
                 })}
-        searchAction={(reset) => (state, event) => {
-          console.log(reset);
-          return ({...state, url: window.location})
-        }}
+        updateFieldAction={(keyz, valuez) => ({...state,  
+          [key]:{...state[key],
+            //loading: true,
+            forms:{...state[key].forms,
+              search:{...state[key].forms.search,
+                name: valuez
+            }}}
+        })}
+        searchAction={()=>load(window.g_urls[key] + '?name=' + state[key].forms.search.name, key)}
       />
       {state[key].loading == true ? <Spinner /> : <Table
         rowHeaders={checkAuth(rowHeaders, state.auth)}
@@ -134,7 +136,14 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
         })
       }
     saveAction={()=>actions.saveEdit({g_actions: g_actions, key: state.auth.key})}
-    updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: key, value})}
+    updateFieldAction={(keyz, value) => ({...state,  
+      [key]:{...state[key],
+        //loading: true,
+        forms:{...state[key].forms,
+          edit:{...state[key].forms.edit,
+            name: value
+        }}}
+    })}
   />
   
   {extraViews?extraViews.map( ev => ev(state, actions)):null}
