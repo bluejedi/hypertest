@@ -60,7 +60,7 @@ const routes = {
     "/": Home,
     "/movies": Movies,
     "/people": People,
-    "/genres": SimpleFilterTableView(state, {key: "genres", title: "Genres"}),
+    "/genres": SimpleFilterTableView(state, {key: "genres", title: "Genres", actions: {updateEdit}}),
     "/jobs": SimpleFilterTableView(state, {key: "jobs", title: "Jobs", actions: {updateEdit}}),
     "/login": Login,
     "404": FourOhFour,
@@ -125,7 +125,7 @@ const ouc = (state, url) => {
 
 const our = (state, location) => [
     state, 
-    load('http://localhost:5000/api' + location.pathname, location.pathname.slice(1)),
+    //load('http://localhost:5000/api' + location.pathname, location.pathname.slice(1)),
     pushUrl(location.pathname)
 ];
 

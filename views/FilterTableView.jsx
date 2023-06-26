@@ -75,7 +75,8 @@ const searchAction= (reset) => (state) => {
 //   }
 // };
 
-const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
+//const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
+const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) =>
 <Viewz key={state.auth.key} username={state.auth.username}>
 <div key={key}>
   <h2>
@@ -105,6 +106,7 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
       />
       {state[key].loading == true ? <Spinner /> : <Table
         rowHeaders={checkAuth(rowHeaders, state.auth)}
+        //rowFilters={checkAuth(rowFilters, state.auth)}
         rowColumns={checkAuth(rowColumns, state.auth)}
         rows={state[key]}
         actions={(row) => ({...state,  
