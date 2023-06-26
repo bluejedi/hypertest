@@ -17,7 +17,7 @@ var loginr = {"key" : "02f3b07962155f1a23dd398b54b10b5caff5b80d"};
 var logoutr = {"detail":"Successfully logged out."};
 
 var jobs = {
-    "count": 1,
+    "count": 2,
     "next": null,
     "previous": null,
     "results": [
@@ -25,6 +25,11 @@ var jobs = {
             "url": "http://localhost:8000/api/jobs/1/",
             "id": 1,
             "name": "blow"
+        },
+        {
+            "url": "http://localhost:8000/api/jobs/2/",
+            "id": 1,
+            "name": "job 2"
         }
     ]
 };

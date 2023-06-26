@@ -39,36 +39,23 @@ const update= (state, {key, response, current, page}) => ({
   });
 
 const updateEdit= (key, row) => (state) => {
-  console.log(key);
-  console.log('masuk');
+  let forms = state[key].forms; 
+  forms.edit = row;
+  console.log(state[key].forms.edit);
 return ({
   ...state,
   loading: true,
   [key]: {...state[key],
-    forms: {...state[key].forms,
-  //forms: Object.assign({}, state['forms'], {
-    edit: 'babix',
-    search: row
-  }}
-  //})
+    forms: {...state[key].forms}},
+    edit: forms.edit
 })};
-
-// const updateEdit= (state, {key, row}) => ({
-//   ...state,
-//   dodol: row,
-//   [key]: {...state[key],
-//     //forms: {...state[key].forms,
-//     edit: 'babix',
-//     dodol: 'dodol'}
-//   //}}
-// });
 
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 <Viewz key={state.auth.key} username={state.auth.username}>
 <div key={key}>
   <h2>
     {title || state.url.pathname} &nbsp;  &nbsp;
-    {state.auth.key?<button className="btn btn-primary btn-action btn-lg" onclick={()=>updateEdit({})}>
+    {state.auth.key?<button className="btn btn-primary btn-action btn-lg" onclick={updateEdit(key, ({}))}>
       <i className="icon icon-plus"></i>
     </button>:null}
     <button className="btn btn-primary btn-action btn-lg" onclick={()=>load(window.g_urls[key], key)}>

@@ -1,7 +1,7 @@
 //module.exports = {
 //export {
 const updateField= ({formname, fieldname, value}) => (state, event) => {
-        console.log("Update ", formname, fieldname, value);
+        //console.log("Update ", formname, fieldname, value);
         return {
             forms: Object.assign({}, state.forms,  {
                 [formname]: Object.assign({}, state.forms[formname], {
