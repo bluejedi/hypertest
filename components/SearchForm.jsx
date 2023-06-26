@@ -6,7 +6,7 @@ import { FormInput, FormInputLong } from './FormInputs.jsx'
 const renderField = (field, updateFieldAction ) => {
     let ftype = FormInput 
     //let ftype = undefined;
-    if(field.type == 'longtext') ftype = FormInputLong
+    //if(field.type == 'longtext') ftype = FormInputLong
     return ftype({
         field,
         action: (val) => updateFieldAction(field.key, val)

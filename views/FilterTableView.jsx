@@ -50,24 +50,6 @@ return ({
     edit: forms.edit
 })};
 
-// const searchAction= (reset) => (state) => {
-//   console.log(reset);
-//   return ({...state, url: window.location})
-// }
-
-const searchAction= (reset) => (state, actions) => {
-  if(reset) {
-      load(state.current.split('?')[0]);
-      return {
-          forms: Object.assign({}, state['forms'], {
-          search: {}
-          })
-      };
-  } else [
-      ({...state, url: window.location}),
-      ()=>load(window.g_urls[key] + '?' + state.forms.search.value, key)]
-};
-
 
 //const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) =>
