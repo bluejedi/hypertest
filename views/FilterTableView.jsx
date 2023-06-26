@@ -88,7 +88,7 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     </button>
   </h2>
   <div className="columns">
-    <div className="column col-lg-12" oncreate={load(window.g_urls[key])}>
+    <div className="column col-lg-12" oncreate={()=>load(window.g_urls[key], key)}>
       <SearchForm
         formFields={mergeValuesErrors(formFields, state[key].forms.search, null)}
         // updateFieldAction={(key, value)=>actions.updateField({formname: 'search', fieldname: key, value})}

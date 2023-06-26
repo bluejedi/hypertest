@@ -79,12 +79,59 @@ const viewz = (state, props) => (
     ])
 );
 
-const ouc = (state, url) => ({ ...state, url: url });
-const our = (state, location) => [state, pushUrl(location.pathname)];
+const load= (url, key) => (state, actions) => [
+    {...state, loading: true},
+    //dispatch => {
+      fetch(url)
+      .then(response => response.json())
+      .then(data => dispatch(update, {key, response: data, current: url, page: 1})) // <---
+    //}
+  ];
+
+// const Select = (state, selected) => [
+//   {...state, selected},
+//   dispatch => {                           // <---
+//     fetch("https://jsonplaceholder.typicode.com/users/" + state.ids[selected])
+//     .then(response => response.json())
+//     .then(data => dispatch(GotBio, data)) // <---
+//   }
+// ]
+
+const update= (state, {key, response, current, page}) => ({
+    ...state,
+    loading: false,
+    [key]: {...state[key],
+      loading: false,
+      page,
+      current,
+      count: response.count,
+      next: response.next,
+      previous: response.previous,
+      items: response.results
+    }    
+  });
+
+const ouc = (state, url) => {
+    console.log(url.pathname);
+    //url = 
+    //load('http://localhost:5000/api' + url.pathname, url.pathname.slice(1));
+    return({ ...state, url: url });
+};
+
+// const ouc = (state, url) => [
+//     { ...state, url: url },
+//     //load('http://localhost:5000/api' + url.pathname, url.pathname.slice(1))
+// ];
+
+const our = (state, location) => [
+    state, 
+    load('http://localhost:5000/api' + location.pathname, location.pathname.slice(1)),
+    pushUrl(location.pathname)
+];
 
 // Create the app()
 app({
-    init: state,
+    init: [state, load('http://localhost:5000/api/jobs/', 'jobs')],
     //view: (state) => (routes[state.url.pathname] ?? routes["404"])(state),
     view: viewz,
     subscriptions: state => [

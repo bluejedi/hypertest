@@ -16,27 +16,7 @@ const genericState = {
 const existingAuth = getExistingAuth()
 
 const state = {
-  rowz: null,
-  //jobs: Object.assign({}, genericState),
-  jobs: {
-    loading: false,
-    page: null,
-    count: 0,
-    next: null,
-    previous: null,
-    items: [
-        {
-            "url": "http://localhost:8000/api/jobs/1/",
-            "id": 1,
-            "name": "blow"
-        }
-    ],
-    forms: {
-      edit: null,
-      search: {}
-    }
-  },
-  formsedit: null,
+  jobs: Object.assign({}, genericState),
   auth: {
     key: existingAuth.key,
     username: existingAuth.username,
@@ -45,10 +25,6 @@ const state = {
       login: {}
     }
   },
-  pkey: 'jobs',
-  title: 'Jobs',
-  uname: 'admin',
-  pass: 'xxx',
   url: window.location,
   //location: location.state,
   toasts: {
