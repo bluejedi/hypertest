@@ -43,7 +43,6 @@ const auth = {
     ...state,
     loading: false,
     toasts: {...state.toasts, 
-      //items: {...state.toasts.items, text:"Successfully logged out!", style:"success"}},
       items: [...state.toasts.items, {text:"Successfully logged out!", style:"success"}]},
     auth: {...state.auth, 
       key,

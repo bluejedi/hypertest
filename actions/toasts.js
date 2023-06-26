@@ -37,16 +37,20 @@ export const toasts = {
   //   ]]}}),
   add: (state, {text, style}) => {
     let statez = {...state};
-    console.log(statez);
+    console.log(...state.toasts.items.slice(0, idx));
   },
 
   hide: text => state => {
-    let idx = state.items.map(v => v.text).indexOf(text);
+    let idx = state.toasts.items.map(v => v.text).indexOf(text);
+    console.log(...state.toasts.items.slice(0, idx));
     return {
+      ...state,
+      url: window.location,
+      toasts: {...state.toasts,
       items: [
-        ...state.items.slice(0, idx),
-        ...state.items.slice(idx+1),
-      ]
+        ...state.toasts.items.slice(0, idx),
+        ...state.toasts.items.slice(idx+1),
+      ]}
     };
   },
 

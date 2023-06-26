@@ -1,7 +1,8 @@
 //import { h } from 'hyperapp';
+import toasts from '../actions/toasts.js';
 
 const Toast  = ({text, actions, style='primary'}) => <div className={`toast toast-${style}`}>
-  <button className="btn btn-clear float-right" onclick={() => actions.toasts.hide(text)}></button>
+  <button className="btn btn-clear float-right" onclick={() => toasts.hide(text)}></button>
   {text}
 </div>;
 

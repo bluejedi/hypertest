@@ -60,7 +60,8 @@ const Movies = FilterTableView({
   rowColumns,
   formFields,
   title: 'Movies list',
-  extraViews
+  extraViews,
+  actions: (row) => updateEdit(row)
 })
 
 export default Movies;
