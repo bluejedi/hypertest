@@ -74,19 +74,20 @@ const viewz = (state, props) => (
             (routes[state.url.pathname] ?? routes["404"])(state, props),
        ]),
         ToastContainer({toasts: state.toasts}),
-       h("hr", {}),
-         DebugContainer({state})
+       h("hr", {}), DebugContainer({state})
+       //h("div", {class: "debug"}, h("div", {class: "scroll"}, DebugContainer({state})))         
+
     ])
 );
 
-const load= (url, key) => (state, actions) => [
-    {...state, loading: true},
-    //dispatch => {
-      fetch(url)
-      .then(response => response.json())
-      .then(data => dispatch(update, {key, response: data, current: url, page: 1})) // <---
-    //}
-  ];
+// const load= (url, key) => (state, actions) => [
+//     {...state, loading: true},
+//     //dispatch => {
+//       fetch(url)
+//       .then(response => response.json())
+//       .then(data => dispatch(update, {key, response: data, current: url, page: 1})) // <---
+//     //}
+//   ];
 
 // const Select = (state, selected) => [
 //   {...state, selected},
@@ -131,7 +132,7 @@ const our = (state, location) => [
 
 // Create the app()
 app({
-    init: [state, load('http://localhost:5000/api/jobs/', 'jobs')],
+    init: state,
     //view: (state) => (routes[state.url.pathname] ?? routes["404"])(state),
     view: viewz,
     subscriptions: state => [

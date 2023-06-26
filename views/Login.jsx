@@ -19,7 +19,7 @@ const NavBar = (state) => <ul>
 //const Login = (state, actions, g_actions) => <div key='login'>
 const Login = (state, actions, g_actions) => 
 <Viewz key={state.auth.key} username={state.auth.username}>
-<div className='container grid-xl' key='login'>
+<div className='container grid-xs' key='login'>
   <h2>Login</h2>
   <form onsubmit={okClick}>
     <FormInput

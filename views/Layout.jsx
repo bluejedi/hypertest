@@ -24,26 +24,56 @@ const Viewz = (props, content) => <div>
       <section class="navbar-section"></section>
     </header>
     <section class="profile">
-        {props.key?<details class="accordion">
-      <summary class="accordion-header">            
-        <span class="chip"><figure class="avatar mr-2" data-initial="A"></figure>{props.username}</span>
-        <i class="icon icon-arrow-right mr-1"></i>
-      </summary>
-      <div class="accordion-body p2 mx-2">
-        <ul class="menu">
-          Profile
-          <li class="divider" data-content="LINKS">
-          </li>
-          <li class="menu-item">
-            <a href="#" onclick={okClick}>
-              <i class="icon icon-link"></i> Logout
-            </a>
-          </li>
-          </ul>
-      </div>
-    </details>:<span class="chip"><figure class="avatar mr-2" data-initial="G"></figure><a href="/login"> Login</a></span>}        
+    {props.key?<details class="accordion">
+        <summary class="accordion-header">            
+            <span class="chip"><figure class="avatar mr-2" data-initial="A"></figure>{props.username}</span>
+            <i class="icon icon-arrow-right mr-1"></i>
+        </summary>
+        <div class="accordion-body p2 mx-2">
+        <ul class="menu text-left">
+            
+            <li class="divider" data-content="Profile"></li>
+            <li class="menu-item">
+                <a href="#" onclick={okClick}>
+                  <i class="icon icon-apps"></i> Settings
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" onclick={okClick}>
+                  <i class="icon icon-link"></i> Logout
+                </a>
+            </li>
+            </ul>
+        </div>
+        </details>:<details class="accordion">
+        <summary class="accordion-header">            
+            <span class="chip"><figure class="avatar mr-2" data-initial="G"></figure>Guess</span>
+            <i class="icon icon-arrow-right mr-1"></i>
+        </summary>
+        <div class="accordion-body p2 mx-2">
+        <ul class="menu text-left">
+            
+            <li class="divider" data-content="Profile"></li>
+            <li class="menu-item">
+                <a href="#" onclick={okClick}>
+                  <i class="icon icon-apps"></i> Settings
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/register" >
+                  <i class="icon icon-link"></i> Register
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="/login" >
+                  <i class="icon icon-link"></i> Login
+                </a>
+            </li>
+            </ul>
+        </div>
+        </details>}        
     
-  </section>
+    </section>
 
     {content}
 </div>
