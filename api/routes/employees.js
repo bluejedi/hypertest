@@ -1,3 +1,4 @@
+//var rp201 = {"url":"http://localhost:8000/api/jobs/2/","id":2,"name":"j"};
 var employees = [
     {"id": 0, "firstName": "James", "lastName": "King", "reports": 4, "title": "President and CEO", "department": "Corporate", "mobilePhone": "617-000-0001", "officePhone": "781-000-0001", "email": "jking@fakemail.com", "city": "Boston, MA", "pic": "James_King.jpg", "twitterId": "@fakejking", "blog": "http://coenraets.org"},
     {"id": 1, "firstName": "Julie", "lastName": "Taylor", "managerId": 0, "managerName": "James King", "reports": 2, "title": "VP of Marketing", "department": "Marketing", "mobilePhone": "617-000-0002", "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA", "pic": "Julie_Taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"},
@@ -15,6 +16,8 @@ var employees = [
 
 var loginr = {"key" : "02f3b07962155f1a23dd398b54b10b5caff5b80d"};
 var logoutr = {"detail":"Successfully logged out."};
+
+var err = {"name":["This field is required."]};
 
 var jobs = [
     {
@@ -128,3 +131,12 @@ exports.findAllMovie = function (req, res, next) {
 exports.findAllPeople = function (req, res, next) {
     res.send(pagina_wrapper(peoples));
 };
+
+exports.errors = function (req, res, next) {
+    //res.send(err);
+    res.send(pagina_wrapper(jobs));
+}
+
+exports.patchJobById = function(req, res, next) {
+    res.send(pagina_wrapper(jobs));
+}

@@ -22,6 +22,8 @@ app.get('/api/movies/', employees.findAllMovie);
 app.get('/employees/:id', employees.findById);
 app.post('/rest-auth/login/', employees.login);
 app.post('/rest-auth/logout/', employees.logout);
+app.post('/api/jobs/', employees.errors);
+app.patch('/api/jobs/:id', employees.patchJobById);
 
 app.set('port', process.env.PORT || 5000);
 

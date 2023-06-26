@@ -42,7 +42,7 @@ const ModalForm = ({ loading, formFields, item, hideAction, saveAction, updateFi
     <div class="modal-footer">
       {loading?<SpinnerSmall />:<div>
         <button class="btn" onclick={hideAction}>Cancel</button>
-        <button class="ml-2 btn btn-primary" onclick={saveAction}>Ok</button>
+        <button type="button" class="ml-2 btn btn-primary" onclick={saveAction}>Ok</button>
       </div>}
     </div>
   </div>
