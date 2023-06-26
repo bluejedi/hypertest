@@ -16,63 +16,66 @@ var employees = [
 var loginr = {"key" : "02f3b07962155f1a23dd398b54b10b5caff5b80d"};
 var logoutr = {"detail":"Successfully logged out."};
 
-var jobs = {
-    "count": 2,
+var jobs = [
+    {
+        "url": "http://localhost:8000/api/jobs/1/",
+        "id": 1,
+        "name": "blow"
+    },
+    {
+        "url": "http://localhost:8000/api/jobs/2/",
+        "id": 2,
+        "name": "job 2"
+    },
+    {
+        "url": "http://localhost:8000/api/jobs/3/",
+        "id": 3,
+        "name": "job 3"
+    },
+    {
+        "url": "http://localhost:8000/api/jobs/4/",
+        "id": 4,
+        "name": "job 4"
+    }
+];
+
+var pagina_wrapper = (entity) => ({
+    "count": entity.length,
     "next": null,
     "previous": null,
-    "results": [
-        {
-            "url": "http://localhost:8000/api/jobs/1/",
-            "id": 1,
-            "name": "blow"
-        },
-        {
-            "url": "http://localhost:8000/api/jobs/2/",
-            "id": 2,
-            "name": "job 2"
-        }
-    ]
-};
+    "results": entity
+});
 
-var genres = {"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"jav"}]};
+var genres = [{"id":1,"name":"jav"}];
+//var genres = {"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"jav"}]};
 
-var movies = {
-    "count": 1,
-    "next": null,
-    "previous": null,
-    "results": [
-        {
-            "url": "http://localhost:8000/api/movies/1/",
-            "id": 1,
-            "genres": [
-                {
-                    "id": 1,
-                    "name": "jav"
-                }
-            ],
-            "title": "jajaja",
-            "imdb_id": null,
-            "release_year": "1969",
-            "runtime": 4,
-            "story": "xxx"
-        }
-    ]
-};
+var movies = [
+    {
+        "url": "http://localhost:8000/api/movies/1/",
+        "id": 1,
+        "genres": [
+            {
+                "id": 1,
+                "name": "jav"
+            }
+        ],
+        "title": "jajaja",
+        "imdb_id": null,
+        "release_year": "1969",
+        "runtime": 4,
+        "story": "xxx"
+    }
+];
 
-var peoples = {
-    "count": 1,
-    "next": null,
-    "previous": null,
-    "results": [
-        {
-            "url": "http://localhost:8000/api/persons/1/",
-            "id": 1,
-            "name": "maria",
-            "imdb_id": null,
-            "birthday": "2023-06-12"
-        }
-    ]
-};
+var peoples = [
+    {
+        "url": "http://localhost:8000/api/persons/1/",
+        "id": 1,
+        "name": "maria",
+        "imdb_id": null,
+        "birthday": "2023-06-12"
+    }
+];
 
 exports.findAll = function (req, res, next) {
     var name = req.query.name;
@@ -99,17 +102,18 @@ exports.logout = function (req, res, next) {
 };
 
 exports.findAllJob = function (req, res, next) {
-    res.send(jobs);
+    //pagina_wrapper(jobs);
+    res.send(pagina_wrapper(jobs));
 };
 
 exports.findAllGenre = function (req, res, next) {
-    res.send(genres);
+    res.send(pagina_wrapper(genres));
 };
 
 exports.findAllMovie = function (req, res, next) {
-    res.send(movies);
+    res.send(pagina_wrapper(movies));
 };
 
 exports.findAllPeople = function (req, res, next) {
-    res.send(peoples);
+    res.send(pagina_wrapper(peoples));
 };
