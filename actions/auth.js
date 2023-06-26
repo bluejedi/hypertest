@@ -1,5 +1,6 @@
 import updateField from './forms.js';
 import { onUrlChange, onUrlRequest, pushUrl } from "@shish2k/hyperapp-navigation";
+import toasts from './toasts.js';
 
 const auth = {
   login: g_actions => (state, actions) => [
@@ -30,8 +31,27 @@ const auth = {
         }
       })
       .then(response => response.json())
-      .then(data => dispatch([auth.updateLogin, {key: null, username: null}]))
+      .then(data => dispatch([auth.updateLogout, {key: null, username: null}]))
     }],
+
+  updateLogoutz: (state) => {
+    //let statez = {...state};
+    console.log(state);
+  },
+
+  updateLogout: (state, {key, username}) => [{
+    ...state,
+    loading: false,
+    toasts: {...state.toasts, 
+      //items: {...state.toasts.items, text:"Successfully logged out!", style:"success"}},
+      items: [...state.toasts.items, {text:"Successfully logged out!", style:"success"}]},
+    auth: {...state.auth, 
+      key,
+      username
+    }}, 
+    localStorage.setItem("auth", JSON.stringify({key, username})),
+    pushUrl('/')
+  ],
 
   updateLogin: (state, {key, username}) => [{
     ...state,
@@ -41,7 +61,12 @@ const auth = {
       username
     }}, 
     localStorage.setItem("auth", JSON.stringify({key, username})),
-    pushUrl('/')
+    pushUrl('/'),
+    //[toasts.add, {text: "Successfully logged out!", style: "success"}],
+    (state) => {
+      //let statez = {...state};
+      console.log({...state});
+    },
   ],
 
   updateField

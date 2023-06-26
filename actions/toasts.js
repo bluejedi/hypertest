@@ -28,14 +28,16 @@
 
 //module.exports = {
 export const toasts = {  
-  add: ({text, style}) => (state, actions) => {
-    // Hide toast after 10 s
-    window.setTimeout( () => {
-      actions.hide(text);
-    }, 10000);
-    return {
-      items: [...state.items, {text: text, style: style}]
-    };
+  // add: (state, {text, style}) => ({
+  //     ...state,
+  //     toasts: {...state.toasts,
+  //     items: [[...state.toasts.items,
+  //       text,
+  //       style
+  //   ]]}}),
+  add: (state, {text, style}) => {
+    let statez = {...state};
+    console.log(statez);
   },
 
   hide: text => state => {
