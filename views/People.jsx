@@ -13,7 +13,8 @@ const rowColumns = [
   (person) => person.id,
   (person) => person.name,
   (person) => person.birthday,
-  (person, actions) => <button className='btn btn-block btn-primary' onclick={()=>actions.updateEdit(Object.assign({}, person))}>Edit</button>
+  // (person, actions) => <button className='btn btn-block btn-primary' onclick={()=>actions.updateEdit(Object.assign({}, person))}>Edit</button>
+  (person, actions) => <button className='btn btn-block btn-primary' onclick={(z) => actions(person)}>Edit</button>
 ];
 
 const formFields = [
