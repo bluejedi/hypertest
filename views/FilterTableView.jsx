@@ -27,18 +27,6 @@ const load= (url, key) => (state, actions) => [
     }
   ];
 
-// const filter=(state, key)=>{
-//   //state[key.forms].search.map
-//   //console.log(state[key].forms.search);
-//   let params = Object.keys(state[key].forms.search).map(function(k, v) {
-//       //console.log(state[key].forms.search[k]);
-//       return encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
-//   }).join('&');
-//   //console.log(params);
-//   //actions.load(state.current.split('?')[0]+'?'+params);
-//   return dispatch=>load(window.g_urls[key] + '?' + params, key);
-// }
-
 const reset = (state, key) => [
     {...state,
       loading: true,
@@ -52,16 +40,6 @@ const reset = (state, key) => [
       .then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) // <---
     }
   ];
-
-// const reset=(state, key)=>{
-//   ()=>load(window.g_urls[key], key);
-//   return {...state,
-//     loading: false,
-//     [key]: {...state[key],
-//       forms: {...state[key].forms,
-//       search: {}}}
-//   }
-// }
 
 const update= (state, {key, response, current, page}) => ({
     ...state,
@@ -129,8 +107,8 @@ const saveEdit= ({url, key}) => (state, actions) => {
         method = 'POST';
     };
 
-    //window.setTimeout(
-    return (dispatch) => {
+    window.setTimeout(
+    () => {
     fetch(saveUrl, {
         body: JSON.stringify(item),
         headers: {
@@ -146,18 +124,35 @@ const saveEdit= ({url, key}) => (state, actions) => {
                 actions.addErrors({formname: 'edit', errors});
             });
         } else if(response.status == 200 || response.status == 201) {
-            // response.json().then(data => {
-                
-            // });
             console.log('buremz');
-            response.json().then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) 
-            console.log('burem');
+            response.json().then(response => {
+              console.log(response);
+                //(state, {key, response, current, page}) => ({
+                return ({
+                  ...state,
+                  loading: false,
+                  [key]: {...state[key],
+                    loading: false,
+                    //page,
+                    //current,
+                    count: response.count,
+                    next: response.next,
+                    previous: response.previous,
+                    items: response.results,
+                    forms: {...state[key].forms,
+                      edit: null }}   
+                });
+                //()=>update('jobs', response, url, 1);
+            });
+            
+            //response.json().then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) 
+            console.log(state);
         }
     }).catch(error => {
         console.log('ERR', error.status);
     });
-    };
-    //, 500);
+    }
+    , 500);
     return ({
       ...state, url: window.location,
       toasts: {...state.toasts, 
@@ -180,9 +175,6 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     </button>:null}
     <button className="btn btn-primary btn-action btn-lg" onclick={()=>load(window.g_urls[key], key)}>
       <i className="icon icon-refresh"></i>
-    </button>
-    <button className="btn btn-primary btn-action btn-lg" onclick={()=>load(window.g_urls[key] + '?name=' + state[key].forms.search.name, key)}>
-      <i className="icon icon-apps"></i>
     </button>
   </h2>
   <div className="columns">

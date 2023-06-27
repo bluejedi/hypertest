@@ -33,7 +33,7 @@ const formFields = [
   {'key': 'release_year', 'label': 'Release Year', 'type': 'number'},
   {'key': 'runtime', 'label': 'Runtime', 'type': 'number'},
   {'key': 'story', 'label': 'Plot', 'type': 'longtext'},
-  {'key': 'genres', 'label': 'Genres', 'type': 'multiselect', url: '/api/genres/'},
+  {'key': 'genres', 'label': 'Genres', 'type': 'text', url: '/api/genres/'}, //temporary using type text caused of multiselect bug
 ];
 
 const multiFormFields = [
@@ -41,26 +41,26 @@ const multiFormFields = [
   {'key': 'job', 'label': 'Job', 'type': 'text'},
 ]
 
-const extraViews = [
-  (state, actions) => <div>{state.movies.showPlot?<PlotModal movie={state.movies.showPlot} actions={actions} />:null}</div>,
-  (state, actions) => <div>{state.movies.forms.editPeople?<div>WILL EDIT<MultiModalForm
-    loading={state.movies.loading}
-    //formFields={mergeValuesErrors(formFields, state.movies.forms.editPeople, state.movies.forms.editPeople.errors)}
-    formFields={multiFormFields}
-    item={state.movies.forms.editPeople}
-    hideAction={()=>actions.updateEditPeople(null)}
-    saveAction={()=>actions.saveEditPeople({g_actions: g_actions, key: state.auth.key})}
-    updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: 'movies', value})}
-  /></div>:null}</div>
-]
+// const extraViews = [
+//   (state, actions) => <div>{state.movies.showPlot?<PlotModal movie={state.movies.showPlot} actions={actions} />:null}</div>,
+//   (state, actions) => <div>{state.movies.forms.editPeople?<div>WILL EDIT<MultiModalForm
+//     loading={state.movies.loading}
+//     //formFields={mergeValuesErrors(formFields, state.movies.forms.editPeople, state.movies.forms.editPeople.errors)}
+//     formFields={multiFormFields}
+//     item={state.movies.forms.editPeople}
+//     hideAction={()=>actions.updateEditPeople(null)}
+//     saveAction={()=>actions.saveEditPeople({g_actions: g_actions, key: state.auth.key})}
+//     updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: 'movies', value})}
+//   /></div>:null}</div>
+// ]
 
-const Movies = FilterTableView({
+const Movies = (state, props) =>FilterTableView({
   key: 'movies',
   rowHeaders,
   rowColumns,
   formFields,
   title: 'Movies list',
-  extraViews,
+  //extraViews,
   actions: (row) => updateEdit(row)
 })
 
