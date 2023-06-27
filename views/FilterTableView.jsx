@@ -161,8 +161,7 @@ const saveEdit= ({url, key}) => (state, actions) => {
       forms: {...state[key].forms,
       edit: null }}
     });
-}
-
+};
 
 //const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) =>

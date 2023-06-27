@@ -19,11 +19,11 @@ const rowColumns = [
   (movie) => movie.release_year,
   (movie) => movie.runtime,
   (movie) => movie.genres.map(z => <span className='chip bg-dark'><a class='text-secondary text-norma' href=''>{z.name}</a></span>),
-  (movie, actions) => <span onclick={()=>actions.updateShowPlot(movie)}>{movie.story.substring(0,50) + '...'}</span>,
+  (movie, actions) => <span onclick={()=>updateShowPlot(movie)}>{movie.story.substring(0,50) + '...'}</span>,
   (movie, actions) => <div>
     <button className='btn btn-primary' onclick={(z) => actions(movie)}>Edit</button>
 
-    <button className='btn btn-primary' onclick={()=>actions.updateEditPeople(Object.assign({}, movie) )}>Edit people</button>
+    <button className='btn btn-primary' onclick={()=>updateEditPeople(Object.assign({}, movie) )}>Edit people</button>
   </div>
 ];
 
@@ -39,20 +39,50 @@ const formFields = [
 const multiFormFields = [
   {'key': 'person', 'label': 'Person', 'type': 'text'},
   {'key': 'job', 'label': 'Job', 'type': 'text'},
-]
+];
 
-// const extraViews = [
-//   (state, actions) => <div>{state.movies.showPlot?<PlotModal movie={state.movies.showPlot} actions={actions} />:null}</div>,
-//   (state, actions) => <div>{state.movies.forms.editPeople?<div>WILL EDIT<MultiModalForm
-//     loading={state.movies.loading}
-//     //formFields={mergeValuesErrors(formFields, state.movies.forms.editPeople, state.movies.forms.editPeople.errors)}
-//     formFields={multiFormFields}
-//     item={state.movies.forms.editPeople}
-//     hideAction={()=>actions.updateEditPeople(null)}
-//     saveAction={()=>actions.saveEditPeople({g_actions: g_actions, key: state.auth.key})}
-//     updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: 'movies', value})}
-//   /></div>:null}</div>
-// ]
+const updateShowPlot= showPlot => state => ({
+    showPlot
+});
+
+const updateEditPeople= movie => state => {
+    // forms: Object.assign({}, state.movies['forms'], {
+    //     editPeople: movie
+    // })
+
+    //try update state with shallow copy 
+    let movies = {...state.movies};
+    let p = movies.forms.editPeople = movie;
+    return {
+      ...state,
+      p
+    }
+};
+
+// const updateEdit= (key, row) => (state) => {
+//   let forms = state[key].forms; 
+//   forms.edit = row;
+//   console.log(state[key].forms.edit);
+// return ({
+//   ...state,
+//   loading: true,
+//   [key]: {...state[key],
+//     forms: {...state[key].forms}},
+//     edit: forms.edit
+// })};
+
+const extraViews = [
+  (state, actions) => <div>{state.movies.showPlot?<PlotModal movie={state.movies.showPlot} actions={actions} />:null}</div>,
+  (state, actions) => <div>{state.movies.forms.editPeople?<div>WILL EDIT<MultiModalForm
+    loading={state.movies.loading}
+    //formFields={mergeValuesErrors(formFields, state.movies.forms.editPeople, state.movies.forms.editPeople.errors)}
+    formFields={multiFormFields}
+    item={state.movies.forms.editPeople}
+    hideAction={()=>updateEditPeople(null)}
+    saveAction={()=>saveEditPeople({g_actions: g_actions, key: state.auth.key})}
+    updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: 'movies', value})}
+  /></div>:null}</div>
+]
 
 const Movies = (state, props) =>FilterTableView({
   key: 'movies',
@@ -60,7 +90,7 @@ const Movies = (state, props) =>FilterTableView({
   rowColumns,
   formFields,
   title: 'Movies list',
-  //extraViews,
+  extraViews,
   actions: (row) => updateEdit(row)
 })
 
