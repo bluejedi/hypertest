@@ -15,15 +15,20 @@ app.all('*', function(req, res, next) {
 });
 
 app.get('/employees', employees.findAll);
-app.get('/api/jobs/', employees.findAllJob);
-app.get('/api/persons/', employees.findAllPeople);
-app.get('/api/genres/', employees.findAllGenre);
-app.get('/api/movies/', employees.findAllMovie);
 app.get('/employees/:id', employees.findById);
+
 app.post('/rest-auth/login/', employees.login);
 app.post('/rest-auth/logout/', employees.logout);
-app.post('/api/jobs/', employees.errors);
+
+app.get('/api/jobs/', employees.findAllJob);
+app.post('/api/jobs/', employees.postJobs);
 app.patch('/api/jobs/:id', employees.patchJobById);
+
+app.get('/api/movies/', employees.findAllMovie);
+
+app.get('/api/persons/', employees.findAllPeople);
+
+app.get('/api/genres/', employees.findAllGenre);
 
 app.set('port', process.env.PORT || 5000);
 

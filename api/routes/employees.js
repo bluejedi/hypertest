@@ -137,6 +137,20 @@ exports.errors = function (req, res, next) {
     res.send(pagina_wrapper(jobs));
 }
 
+exports.postJobs = function (req, res, next) {
+    //var njobs = 
+    jobs.push({url: "http://localhost:8000/api/jobs/69/", id: '69', name: 'new name'});
+    console.log(jobs);
+    res.send(pagina_wrapper(jobs));
+}
+
+exports.postGenress = function (req, res, next) {
+    //var njobs = 
+    genres.push({id: '69', name: 'new genre'});
+    console.log(genres);
+    res.send(pagina_wrapper(genres));
+}
+
 exports.patchJobById = function(req, res, next) {
     res.send(pagina_wrapper(jobs));
 }

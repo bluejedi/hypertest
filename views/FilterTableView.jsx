@@ -27,17 +27,17 @@ const load= (url, key) => (state, actions) => [
     }
   ];
 
-const filter=(state, key)=>{
-  //state[key.forms].search.map
-  //console.log(state[key].forms.search);
-  let params = Object.keys(state[key].forms.search).map(function(k, v) {
-      //console.log(state[key].forms.search[k]);
-      return encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
-  }).join('&');
-  //console.log(params);
-  //actions.load(state.current.split('?')[0]+'?'+params);
-  return dispatch=>load(window.g_urls[key] + '?' + params, key);
-}
+// const filter=(state, key)=>{
+//   //state[key.forms].search.map
+//   //console.log(state[key].forms.search);
+//   let params = Object.keys(state[key].forms.search).map(function(k, v) {
+//       //console.log(state[key].forms.search[k]);
+//       return encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
+//   }).join('&');
+//   //console.log(params);
+//   //actions.load(state.current.split('?')[0]+'?'+params);
+//   return dispatch=>load(window.g_urls[key] + '?' + params, key);
+// }
 
 const reset = (state, key) => [
     {...state,
@@ -89,6 +89,18 @@ return ({
     edit: forms.edit
 })};
 
+const filter=(state, key)=>{
+  //state[key.forms].search.map
+  //console.log(state[key].forms.search);
+  let params = Object.keys(state[key].forms.search).map(function(k, v) {
+      //console.log(state[key].forms.search[k]);
+      return encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
+  }).join('&');
+  //console.log(params);
+  //actions.load(state.current.split('?')[0]+'?'+params);
+  return dispatch=>load(window.g_urls[key] + '?' + params, key);
+}
+
 const saveEdit= ({url, key}) => (state, actions) => {
     //actions.updateLoading(true);
     let item = state[key].forms.edit;
@@ -115,9 +127,10 @@ const saveEdit= ({url, key}) => (state, actions) => {
     } else { // CREATE
         saveUrl = url;
         method = 'POST';
-    }
+    };
 
-    window.setTimeout( () => {
+    //window.setTimeout(
+    return (dispatch) => {
     fetch(saveUrl, {
         body: JSON.stringify(item),
         headers: {
@@ -133,17 +146,18 @@ const saveEdit= ({url, key}) => (state, actions) => {
                 actions.addErrors({formname: 'edit', errors});
             });
         } else if(response.status == 200 || response.status == 201) {
-            response.json().then(data => {
-                // Data is the object that was saved
-                //g_actions.toasts.add({text: 'Successfully saved object!', style: 'success'} );
-                //actions.updateEdit(null);
-                //actions.load(state.current);
-            });
+            // response.json().then(data => {
+                
+            // });
+            console.log('buremz');
+            response.json().then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) 
+            console.log('burem');
         }
     }).catch(error => {
         console.log('ERR', error.status);
     });
-    }, 500);
+    };
+    //, 500);
     return ({
       ...state, url: window.location,
       toasts: {...state.toasts, 
