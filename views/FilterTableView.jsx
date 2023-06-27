@@ -27,23 +27,17 @@ const load= (url, key) => (state, actions) => [
     }
   ];
 
-  // const saveEdit= (url, key) => (state, actions) => [
-  //   {...state, loading: true},
-  //   dispatch => {                           // <---
-  //     fetch('http://localhost:5000/api/jobs/', {
-  //       method: 'POST',
-  //       //mode: "no-cors",
-  //       body: JSON.stringify({
-  //         name: state.jobs.forms.edit.name
-  //         //password: state.auth.forms.login.password,
-  //       }),
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //     })
-  //     .then(response => response.json())
-  //     .then(data => dispatch([update, {key, response: data, current: url, page: 1}]))
-  //   }];
+const onclicks=(state, key)=>{
+  //state[key.forms].search.map
+  //console.log(state[key].forms.search);
+  let params = Object.keys(state[key].forms.search).map(function(k, v) {
+      //console.log(state[key].forms.search[k]);
+      return encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
+  }).join('&');
+  console.log(params);
+  //actions.load(state.current.split('?')[0]+'?'+params);
+  return dispatch=>load(window.g_urls[key] + '?' + params, key);
+}
 
 const update= (state, {key, response, current, page}) => ({
     ...state,
@@ -172,7 +166,8 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
                 [keyz]: valuez
             }}}
         })}
-        searchAction={()=>load(window.g_urls[key] + '?name=' + state[key].forms.search.name, key)}
+        //searchAction={()=>load(window.g_urls[key] + '?name=' + state[key].forms.search.name, key)}
+        searchAction={onclicks(state, key)}
       />
       {state[key].loading == true ? <Spinner /> : <Table
         rowHeaders={checkAuth(rowHeaders, state.auth)}
