@@ -169,7 +169,7 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
             //loading: true,
             forms:{...state[key].forms,
               search:{...state[key].forms.search,
-                name: valuez
+                [keyz]: valuez
             }}}
         })}
         searchAction={()=>load(window.g_urls[key] + '?name=' + state[key].forms.search.name, key)}
