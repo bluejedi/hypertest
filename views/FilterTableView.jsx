@@ -49,7 +49,7 @@ const reset = (state, key) => [
     dispatch => {                           // <---
       fetch(window.g_urls[key])
       .then(response => response.json())
-      .then(data => dispatch([update, {key, response: data, current: url, page: 1}])) // <---
+      .then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) // <---
     }
   ];
 
