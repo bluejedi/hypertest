@@ -80,44 +80,47 @@ const viewz = (state, props) => (
     ])
 );
 
-// const load= (url, key) => (state, actions) => [
-//     {...state, loading: true},
-//     //dispatch => {
-//       fetch(url)
-//       .then(response => response.json())
-//       .then(data => dispatch(update, {key, response: data, current: url, page: 1})) // <---
-//     //}
-//   ];
+// const update= (state, {key, response, current, page}) => ({
+//     ...state,
+//     loading: false,
+//     [key]: {...state[key],
+//       loading: false,
+//       page,
+//       current,
+//       //url: current,
+//       count: response.count,
+//       next: response.next,
+//       previous: response.previous,
+//       items: response.results
+//     }    
+//   });
 
-// const Select = (state, selected) => [
-//   {...state, selected},
-//   dispatch => {                           // <---
-//     fetch("https://jsonplaceholder.typicode.com/users/" + state.ids[selected])
-//     .then(response => response.json())
-//     .then(data => dispatch(GotBio, data)) // <---
-//   }
-// ]
-
-const update= (state, {key, response, current, page}) => ({
+const update=(state, {key, response, current, page}) => {
+    console.log(key);
+    return ({
     ...state,
     loading: false,
     [key]: {...state[key],
       loading: false,
       page,
       current,
+      //url: current,
       count: response.count,
       next: response.next,
       previous: response.previous,
       items: response.results
     }    
   });
+}
 
-const ouc = (state, url) => {
-    console.log(url.pathname);
-    //url = 
-    //load('http://localhost:5000/api' + url.pathname, url.pathname.slice(1));
-    return({ ...state, url: url });
-};
+const ouc = (state, url) => [
+    { ...state, url: url },
+    dispatch => {                           // <---
+      fetch(window.g_urls[url.pathname.slice(1)])
+      .then(response => response.json())
+      .then(data => dispatch([update, {key:url.pathname.slice(1), response: data, current: window.g_urls[state.url.pathname], page: 1}])) // <---
+    }
+  ];
 
 // const ouc = (state, url) => [
 //     { ...state, url: url },
