@@ -17,17 +17,17 @@ const renderFields = (fields,  updateFieldAction) => fields.map(
     f => renderField(f, updateFieldAction)
 )
 
-const SearchForm = ({ loading, formFields, searchAction, updateFieldAction }) => <form method='GET' class='form-horizontal'>
+const SearchForm = ({ loading, formFields, searchAction, resetAction, updateFieldAction }) => <form method='GET' class='form-horizontal'>
     <div class="form-group">
         {formFields && renderFields(formFields, updateFieldAction)}
         {loading?<SpinnerSmall />:<div  >
             <button type="button" style={{marginTop: '2.3em'}}  class="btn ml-2 btn-primary" onclick={searchAction}>Filter</button>
-            <button style={{'margin-top': '2.3em'}} class="btn ml-2" onclick={(_,e) => {e.preventDefault(); searchAction(true); return false; }} >Reset</button>
+            <button type="button" style={{'margin-top': '2.3em'}} class="btn ml-2" onclick={resetAction} >Reset</button>
         </div>}
     </div>
 </form>
 
-const SearchFormb = ({ loading, formFields, searchAction, updateFieldAction }) => 
+const SearchFormb = ({ loading, formFields, searchAction, resetAction, updateFieldAction }) => 
 <form method='GET' class='form-horizontal' onsubmit={(_,e) => {e.preventDefault()}}>
     <div class="form-group">
         {

@@ -27,17 +27,41 @@ const load= (url, key) => (state, actions) => [
     }
   ];
 
-const onclicks=(state, key)=>{
+const filter=(state, key)=>{
   //state[key.forms].search.map
   //console.log(state[key].forms.search);
   let params = Object.keys(state[key].forms.search).map(function(k, v) {
       //console.log(state[key].forms.search[k]);
       return encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
   }).join('&');
-  console.log(params);
+  //console.log(params);
   //actions.load(state.current.split('?')[0]+'?'+params);
   return dispatch=>load(window.g_urls[key] + '?' + params, key);
 }
+
+const reset = (state, key) => [
+    {...state,
+      loading: true,
+      [key]: {...state[key],
+        forms: {...state[key].forms,
+        search: {}}}
+    },
+    dispatch => {                           // <---
+      fetch(window.g_urls[key])
+      .then(response => response.json())
+      .then(data => dispatch([update, {key, response: data, current: url, page: 1}])) // <---
+    }
+  ];
+
+// const reset=(state, key)=>{
+//   ()=>load(window.g_urls[key], key);
+//   return {...state,
+//     loading: false,
+//     [key]: {...state[key],
+//       forms: {...state[key].forms,
+//       search: {}}}
+//   }
+// }
 
 const update= (state, {key, response, current, page}) => ({
     ...state,
@@ -167,7 +191,8 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
             }}}
         })}
         //searchAction={()=>load(window.g_urls[key] + '?name=' + state[key].forms.search.name, key)}
-        searchAction={onclicks(state, key)}
+        searchAction={filter(state, key)}
+        resetAction={reset(state, key)}
       />
       {state[key].loading == true ? <Spinner /> : <Table
         rowHeaders={checkAuth(rowHeaders, state.auth)}
