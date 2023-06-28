@@ -59,18 +59,6 @@ const updateEditPeople= movie => state => {
     }
 };
 
-// const updateEdit= (key, row) => (state) => {
-//   let forms = state[key].forms; 
-//   forms.edit = row;
-//   console.log(state[key].forms.edit);
-// return ({
-//   ...state,
-//   loading: true,
-//   [key]: {...state[key],
-//     forms: {...state[key].forms}},
-//     edit: forms.edit
-// })};
-
 const extraViews = [
   (state, actions) => <div>{state.movies.showPlot?<PlotModal movie={state.movies.showPlot} actions={actions} />:null}</div>,
   (state, actions) => <div>{state.movies.forms.editPeople?<div>WILL EDIT<MultiModalForm

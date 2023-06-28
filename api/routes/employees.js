@@ -29,17 +29,18 @@ var jobs = [
         "url": "http://localhost:8000/api/jobs/2/",
         "id": 2,
         "name": "job 2"
-    },
-    {
-        "url": "http://localhost:8000/api/jobs/3/",
-        "id": 3,
-        "name": "job 3"
-    },
-    {
-        "url": "http://localhost:8000/api/jobs/4/",
-        "id": 4,
-        "name": "job 4"
     }
+    //,
+    // {
+    //     "url": "http://localhost:8000/api/jobs/3/",
+    //     "id": 3,
+    //     "name": "job 3"
+    // },
+    // {
+    //     "url": "http://localhost:8000/api/jobs/4/",
+    //     "id": 4,
+    //     "name": "job 4"
+    // }
 ];
 
 var pagina_wrapper = (entity) => ({

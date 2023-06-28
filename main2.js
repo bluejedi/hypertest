@@ -9,6 +9,7 @@ import People from './views/People.jsx';
 import DebugContainer from './components/DebugContainer.jsx';
 import ToastContainer from './components/ToastContainer.jsx';
 import auth from './actions/auth.js';
+import { Http, fetchEffect, assign, FormError } from './views/FilterTableView.jsx';
 
 const FourOhFour = ({key, title}) => (state) => (
     h("main", {}, [
@@ -74,7 +75,11 @@ const update=(state, {key, response, current, page}) => {
 }
 
 const ouc = (state, url) => [
-    { ...state, url: url },
+    { ...state, 
+        url: url, //mandatory
+        toasts: {...state.toasts,
+            items:[]} 
+    },
     dispatch => {                           // <---
       fetch(window.g_urls[url.pathname.slice(1)])
       .then(response => response.json())

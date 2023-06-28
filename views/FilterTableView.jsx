@@ -9,6 +9,8 @@ import { checkAuth } from '../util/auth';
 import Viewz from "./Layout.jsx";
 import actions from "../actions/index.js";
 
+
+
 const load= (url, key) => (state, actions) => [
     {...state, loading: true, url: window.location},
     dispatch => {                           // <---
@@ -55,6 +57,20 @@ const update= (state, {key, response, current, page}) => ({
     }    
   });
 
+const updateSave= (state, response) => ({
+    ...state,
+    loading: false,
+    ["jobs"]: {...state["jobs"],
+      loading: false,
+      page: 1,
+      current: 'u',
+      count: response.count,
+      next: response.next,
+      previous: response.previous,
+      items: response.results
+    }    
+  });
+
 const updateEdit= (key, row) => (state) => {
   let forms = state[key].forms; 
   forms.edit = row;
@@ -79,89 +95,163 @@ const filter=(state, key)=>{
   return dispatch=>load(window.g_urls[key] + '?' + params, key);
 }
 
-const saveEdit= ({url, key}) => (state, actions) => {
-    //actions.updateLoading(true);
-    let item = state[key].forms.edit;
-
-    for(var k in item) {
-        let v = item[k];
-        if(Array.isArray(v)) {
-            item[k] = v.map(x=> {
-                return {
-                    'id': x.id,
-                    'name': x.text
-                }
-            }
-            )
-        }
+export const fetchEffect = (dispatch, props) => {
+  return fetch(props.url, props.options)
+  .then(response => { if (!response.ok) { throw response } return response })
+  .then(response => { return response[props.response](); })
+  .then(result => { dispatch(props.action, result); })
+  .catch(error => {
+    if (props.errorResponse) {
+      console.log(props.errorResponse);
+      return error[props.errorResponse]()
+        .then(result => {
+          dispatch(props.error, result);
+        })
+        .catch(error => {
+          dispatch(props.error, error);
+        })
+    } else {
+      dispatch(props.error, error);
     }
+  })
+}
 
-    let saveUrl = '';
-    let method = '';
-    if(item.id) { // UPDATE
-        saveUrl = url+item.id+'/';
-        method = 'PATCH';
-        //msg = 
-    } else { // CREATE
-        saveUrl = url;
-        method = 'POST';
-    };
-
-    window.setTimeout(
-    () => {
-    fetch(saveUrl, {
-        body: JSON.stringify(item),
-        headers: {
-            'content-type': 'application/json',
-            //'Authorization': 'Token ' + key
-        },
-        method,
-    }).then(response => {
-        //actions.updateLoading(false);
-
-        if(response.status == 400) {
-            response.json().then(errors => {
-                actions.addErrors({formname: 'edit', errors});
-            });
-        } else if(response.status == 200 || response.status == 201) {
-            console.log('buremz');
-            response.json().then(response => {
-              console.log(response);
-                //(state, {key, response, current, page}) => ({
-                return ({
-                  ...state,
-                  loading: false,
-                  [key]: {...state[key],
-                    loading: false,
-                    //page,
-                    //current,
-                    count: response.count,
-                    next: response.next,
-                    previous: response.previous,
-                    items: response.results,
-                    forms: {...state[key].forms,
-                      edit: null }}   
-                });
-                //()=>update('jobs', response, url, 1);
-            });
-            
-            //response.json().then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) 
-            console.log(state);
-        }
-    }).catch(error => {
-        console.log('ERR', error.status);
-    });
+function httpEffect(dispatch, props) {
+  return fetch(props.url, props.options)
+  .then(function(response) {
+    if (!response.ok) {
+      throw response
     }
-    , 500);
-    return ({
-      ...state, url: window.location,
-      toasts: {...state.toasts, 
-      items: [...state.toasts.items, {text:"Successfully saved!", style:"success"}]},
-      [key]: {...state[key],
-      forms: {...state[key].forms,
-      edit: null }}
-    });
+    return response
+  })
+  .then(function(response) {
+    return response[props.response]()
+  })
+  .then(function(result) {
+    dispatch(props.action, result);
+  })
+  // .catch(function(error) {
+  //   if (props.errorResponse) {
+  //     console.log(props.errorResponse);
+  //     return error[props.errorResponse]()
+  //       .then(function(result) {
+  //         dispatch(props.error, result);
+  //       })
+  //       .catch(function(error) {
+  //         dispatch(props.error, error);
+  //       })
+  //   } else {
+  //     dispatch(props.error, error);
+  //   }
+  // })
+}
+
+export const assign = (source, assignments) => {
+  var result = {},
+    i;
+  for (i in source) result[i] = source[i];
+  for (i in assignments) result[i] = assignments[i];
+  return result
+}
+
+export const Http = (props) => {
+  console.log(props);
+  return [
+    httpEffect,
+    assign(
+      {
+        options: {},
+        response: "json",
+        error: props.action
+      },
+      props
+    )
+  ]
+}
+
+export const addErrors= ({formname, errors}) => state => {
+  //console.log("Add errors ", errors );
+  return {
+    forms: Object.assign({}, state.forms,  {
+        [formname]: Object.assign({}, state.forms[formname], {
+            errors
+        })
+    })
+  }
+}
+
+export const FormError = (state, { errors }) => ({ ...state, inProgress: false, errors });
+    
+const submitz = (state, {url, key}) => {
+  //console.log(item);
+  let item = state[key].forms.edit;
+
+  for(var k in item) {
+      let v = item[k];
+      if(Array.isArray(v)) {
+          item[k] = v.map(x=> {
+              return {
+                  'id': x.id,
+                  'name': x.text
+              }
+          })
+      }
+  }
+
+  let saveUrl = '';
+  let method = '';
+  if(item.id) { // UPDATE
+      saveUrl = url+item.id+'/';
+      method = 'PATCH';
+      //msg = 
+  } else { // CREATE
+      saveUrl = url;
+      method = 'POST';
+  };
+
+  return Http({
+    url: saveUrl,
+    options: {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
+    },
+    errorResponse: "json",
+    action: updateSave,
+    error: addErrors,
+  });
 };
+
+const saveEdit = ({url, key}) => (state) => 
+// {
+// console.log(state);
+// return 
+[({
+  ...state, url: window.location,
+  //toasts: {...state.toasts, 
+  //items: [...state.toasts.items, {text:"Successfully saved!", style:"success"}]},
+  [key]: {...state[key],
+  forms: {...state[key].forms,
+  edit: null }}
+}), 
+submitz(state, {url: url, key: key})
+  // Http({
+  //   url: url,
+  //   options: {
+  //     method: 'POST',
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(state[key].forms.edit),
+  //   },
+  //   errorResponse: "json",
+  //   action: updateSave,
+  //   error: addErrors,
+  // })
+]
+//};
 
 //const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) =>
