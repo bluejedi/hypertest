@@ -60,7 +60,7 @@ const update= (state, {key, response, current, page}) => ({
 const updateSave= (state, response) => ({
     ...state,
     loading: false,
-    ["jobs"]: {...state["jobs"],
+    [state.ukey]: {...state[state.ukey],
       loading: false,
       page: 1,
       current: 'u',
@@ -100,20 +100,20 @@ export const fetchEffect = (dispatch, props) => {
   .then(response => { if (!response.ok) { throw response } return response })
   .then(response => { return response[props.response](); })
   .then(result => { dispatch(props.action, result); })
-  .catch(error => {
-    if (props.errorResponse) {
-      console.log(props.errorResponse);
-      return error[props.errorResponse]()
-        .then(result => {
-          dispatch(props.error, result);
-        })
-        .catch(error => {
-          dispatch(props.error, error);
-        })
-    } else {
-      dispatch(props.error, error);
-    }
-  })
+  // .catch(error => {
+  //   if (props.errorResponse) {
+  //     console.log(props.errorResponse);
+  //     return error[props.errorResponse]()
+  //       .then(result => {
+  //         dispatch(props.error, result);
+  //       })
+  //       .catch(error => {
+  //         dispatch(props.error, error);
+  //       })
+  //   } else {
+  //     dispatch(props.error, error);
+  //   }
+  // })
 }
 
 function httpEffect(dispatch, props) {
@@ -157,7 +157,7 @@ export const assign = (source, assignments) => {
 export const Http = (props) => {
   console.log(props);
   return [
-    httpEffect,
+    fetchEffect,
     assign(
       {
         options: {},
@@ -318,13 +318,13 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
             }}
         })
       }
-    saveAction={()=>saveEdit({url: 'http://localhost:5000/api/jobs/', key: key})}
+    saveAction={()=>saveEdit({url: window.g_urls[key], key: key})}
     updateFieldAction={(keyz, value) => ({...state,  
       [key]:{...state[key],
         //loading: true,
         forms:{...state[key].forms,
           edit:{...state[key].forms.edit,
-            name: value
+            [keyz]: value
         }}}
     })}
   />

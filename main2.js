@@ -61,6 +61,7 @@ const update=(state, {key, response, current, page}) => {
     return ({
     ...state,
     loading: false,
+    ukey: key,
     [key]: {...state[key],
       loading: false,
       page,
@@ -69,21 +70,23 @@ const update=(state, {key, response, current, page}) => {
       count: response.count,
       next: response.next,
       previous: response.previous,
+      forms: {...state[key].forms, edit: null, search: {}},
       items: response.results
     }    
   });
 }
 
 const ouc = (state, url) => [
-    { ...state, 
+    { ...state,
         url: url, //mandatory
+        //ukey: url.pathname.slice(1) ,
         toasts: {...state.toasts,
             items:[]} 
     },
-    dispatch => {                           // <---
+    dispatch => {
       fetch(window.g_urls[url.pathname.slice(1)])
       .then(response => response.json())
-      .then(data => dispatch([update, {key:url.pathname.slice(1), response: data, current: window.g_urls[state.url.pathname], page: 1}])) // <---
+      .then(data => dispatch([update, {key: url.pathname == 'people' ? 'persons' : url.pathname.slice(1), response: data, current: window.g_urls[state.url.pathname], page: 1}])) // <---
     }
   ];
 

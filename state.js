@@ -16,6 +16,7 @@ const genericState = {
 const existingAuth = getExistingAuth()
 
 const state = {
+  ukey: 'home',
   jobs: Object.assign({}, genericState),
   auth: {
     key: existingAuth.key,

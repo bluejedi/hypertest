@@ -21,13 +21,13 @@ var err = {"name":["This field is required."]};
 
 var jobs = [
     {
-        "url": "http://localhost:8000/api/jobs/1/",
         "id": 1,
+        "url": "http://localhost:8000/api/jobs/1/",
         "name": "blow"
     },
     {
-        "url": "http://localhost:8000/api/jobs/2/",
         "id": 2,
+        "url": "http://localhost:8000/api/jobs/2/",
         "name": "job 2"
     }
     //,
@@ -140,12 +140,23 @@ exports.errors = function (req, res, next) {
 
 exports.postJobs = function (req, res, next) {
     //var njobs = 
-    jobs.push({url: "http://localhost:8000/api/jobs/69/", id: '69', name: 'new name'});
-    console.log(jobs);
+    let data = req.body;
+    //console.log(data);
+    let newid = jobs.length + 1
+    jobs.push({url: `"http://localhost:8000/api/jobs/${newid}/"`, id: newid, name: data.name});
     res.send(pagina_wrapper(jobs));
 }
 
-exports.postGenress = function (req, res, next) {
+exports.postData = function (req, res, next) {
+    //var njobs = 
+    let data = req.body;
+    //console.log(data);
+    let newid = jobs.length + 1
+    jobs.push({url: `"http://localhost:8000/api/jobs/${newid}/"`, id: newid, name: data.name});
+    res.send(pagina_wrapper(jobs));
+}
+
+exports.postGenres = function (req, res, next) {
     //var njobs = 
     genres.push({id: '69', name: 'new genre'});
     console.log(genres);
@@ -153,5 +164,8 @@ exports.postGenress = function (req, res, next) {
 }
 
 exports.patchJobById = function(req, res, next) {
+    let data = req.body;
+    var id = req.params.id;
+    jobs[id - 1] = data;
     res.send(pagina_wrapper(jobs));
 }

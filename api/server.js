@@ -1,8 +1,11 @@
 var express = require('express'),
+    bodyParser = require('body-parser');
     employees = require('./routes/employees'),
     app = express();
 
 app.use(express.static('www'));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 // CORS (Cross-Origin Resource Sharing) headers to support Cross-site HTTP requests
 app.all('*', function(req, res, next) {
@@ -25,10 +28,31 @@ app.post('/api/jobs/', employees.postJobs);
 app.patch('/api/jobs/:id', employees.patchJobById);
 
 app.get('/api/movies/', employees.findAllMovie);
+app.post('/api/movies/', employees.postJobs);
+app.patch('/api/movies/:id', employees.patchJobById);
+
 
 app.get('/api/persons/', employees.findAllPeople);
+app.post('/api/persons/', employees.postJobs);
+app.patch('/api/persons/:id', employees.patchJobById);
 
 app.get('/api/genres/', employees.findAllGenre);
+app.post('/api/genres/', employees.postJobs);
+app.patch('/api/genres/:id', employees.patchJobById);
+
+app.post('/', (req, res) => {
+    let data = req.body;
+    res.send('Data Received: ' + JSON.stringify(data));
+})
+
+// const bodyParser = require('body-parser')
+ 
+// const app = express()
+ 
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
+ 
 
 app.set('port', process.env.PORT || 5000);
 

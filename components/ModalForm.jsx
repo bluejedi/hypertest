@@ -13,7 +13,7 @@ const renderField = (field, updateFieldAction ) => {
     case 'text': ftype = FormInput; break;
     case 'number': ftype = FormInput; break;
     case 'multiselect': ftype = MultiSelect; break;
-    case 'date': ftype = FormDateInput; break;
+    case 'date': ftype = FormInput; break;
   }
   return ftype({
     field,
