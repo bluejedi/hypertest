@@ -10,13 +10,6 @@ const okClick = (_, event) => {
   return [auth.login, auth]
 }
 
-const NavBar = (state) => <ul>
-  <li><a href="/">Home</a></li>
-  <li><a href="/settings">Settings</a></li>
-  <li><a href="/about">About</a></li>
-</ul>
-
-//const Login = (state, actions, g_actions) => <div key='login'>
 const Login = (state, actions, g_actions) => 
 <Viewz key={state.auth.key} username={state.auth.username}>
 <div className='container grid-xs' key='login'>

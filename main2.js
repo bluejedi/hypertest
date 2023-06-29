@@ -50,9 +50,7 @@ const viewz = (state, props) => (
             (routes[state.url.pathname] ?? routes["404"])(state, props),
        ]),
         ToastContainer({toasts: state.toasts}),
-       h("hr", {}), DebugContainer({state})
-       //h("div", {class: "debug"}, h("div", {class: "scroll"}, DebugContainer({state})))         
-
+        h("hr", {}), DebugContainer({state})
     ])
 );
 
@@ -78,17 +76,21 @@ const update=(state, {key, response, current, page}) => {
   });
 }
 
-const ouc = (state, url) => [
-    { ...state,
-        url: url, //mandatory
-    },
-    dispatch => {
+const loadpage = (url) => {
+    return dispatch => {
       //console.log(url.pathname != '/home');
       if(url.pathname != '/' && url.pathname != '/login' && url.pathname != '/logout') {  
       fetch(window.g_urls[url.pathname.slice(1)])
       .then(response => response.json())
       .then(data => dispatch([update, {key: url.pathname == 'people' ? 'persons' : url.pathname.slice(1), response: data, current: window.g_urls[state.url.pathname], page: 1}])) // <---
     }}
+}
+
+const ouc = (state, url) => [
+    { ...state,
+        url: url, //mandatory
+    },
+    loadpage(url)
   ];
 
 const our = (state, location) => [
@@ -99,7 +101,6 @@ const our = (state, location) => [
 // Create the app()
 app({
     init: state,
-    //view: (state) => (routes[state.url.pathname] ?? routes["404"])(state),
     view: viewz,
     subscriptions: state => [
         onUrlChange(ouc),

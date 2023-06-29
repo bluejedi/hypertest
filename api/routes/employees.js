@@ -122,15 +122,60 @@ exports.findAllJob = function (req, res, next) {
 };
 
 exports.findAllGenre = function (req, res, next) {
-    res.send(pagina_wrapper(genres));
+    //pagina_wrapper(jobs);
+    var name = req.query.name;
+    if (name) {
+        res.send(pagina_wrapper(genres.filter(function(genre) {
+            return (genre.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        })));
+        // res.send(genres.filter(function(genre) {
+        //     return (genre.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        // }));
+    } else {
+        res.send(pagina_wrapper(genres));
+    }
+    //res.send(pagina_wrapper(jobs));
 };
 
 exports.findAllMovie = function (req, res, next) {
-    res.send(pagina_wrapper(movies));
+    //pagina_wrapper(jobs);
+    var name = req.query.name;
+    //todo add the rest req query params
+    if (name) {
+        res.send(pagina_wrapper(movies.filter(function(movie) {
+            return (movie.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        })));
+        // res.send(movies.filter(function(movie) {
+        //     return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        // }));
+    } else {
+        res.send(pagina_wrapper(movies));
+    }
+    //res.send(pagina_wrapper(jobs));
 };
 
 exports.findAllPeople = function (req, res, next) {
-    res.send(pagina_wrapper(peoples));
+    //pagina_wrapper(jobs);
+    var name = req.query.name;
+    //todo add req query birthday
+    var birthday = new Date(req.query.birthday).getTime();
+    console.log(birthday);
+
+    if (name || birthday) {
+        res.send(pagina_wrapper(peoples.filter(people => {
+            //return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+            console.log('param', birthday);
+            console.log('people', people.birthday);
+            var t = new Date(people.birthday).getTime();
+            return t == birthday;
+        })));
+        // res.send(peoples.filter(function(people) {
+        //     return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        // }));
+    } else {
+        res.send(pagina_wrapper(peoples));
+    }
+    //res.send(pagina_wrapper(jobs));
 };
 
 exports.errors = function (req, res, next) {

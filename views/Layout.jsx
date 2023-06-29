@@ -1,7 +1,5 @@
 // import { h, text } from "hyperapp"
 import auth from '../actions/auth.js';
-// import DebugContainer from '../components/DebugContainer.jsx';
-// //import ToastContainer from '../components/ToastContainer.jsx';
 
 const okClick = (_, event) => {
   event.preventDefault(); 
@@ -45,7 +43,9 @@ const Viewz = (props, content) => <div>
             </li>
             </ul>
         </div>
-        </details>:<details class="accordion">
+        </details>
+    :
+        <details class="accordion">
         <summary class="accordion-header">            
             <span class="chip"><figure class="avatar mr-2" data-initial="G"></figure>Guess</span>
             <i class="icon icon-arrow-right mr-1"></i>
