@@ -266,13 +266,29 @@ exports.postJobs = function (req, res, next) {
     res.send(pagina_wrapper(jobs));
 }
 
-exports.postData = function (req, res, next, ent) {
+exports.postMovies = function (req, res, next) {
     //var njobs = 
     let data = req.body;
     //console.log(data);
-    let newid = ent.length + 1
-    ent.push({url: `"http://localhost:5000/api/${ent}/${newid}/"`, id: newid, name: data.name});
-    res.send(pagina_wrapper(jobs));
+    let newid = movies.length + 1
+    movies.push({
+        "url": `"http://localhost:5000/api/movies/${newid}/"`,
+        "id": 1,
+        //todo refine genres currently using hardcode data still
+        "genres": [
+            {
+                "id": 1,
+                "name": "jav"
+            }
+        ],
+        "title": data.title,
+        "imdb_id": null,
+        "release_year": data.release_year,
+        "runtime": data.runtime,
+        "story": data.story
+    })
+    //ent.push({url: `"http://localhost:5000/api/${ent}/${newid}/"`, id: newid, name: data.name});
+    res.send(pagina_wrapper(movies));
 }
 
 exports.postGenres = function (req, res, next) {
@@ -312,4 +328,11 @@ exports.patchPeopleById = function(req, res, next) {
     var id = req.params.id;
     peoples[id - 1] = data;
     res.send(pagina_wrapper(peoples));
+}
+
+exports.patchMovieById = function(req, res, next) {
+    let data = req.body;
+    var id = req.params.id;
+    movies[id - 1] = data;
+    res.send(pagina_wrapper(movies));
 }

@@ -55,7 +55,7 @@ const viewz = (state, props) => (
 );
 
 const update=(state, {key, response, current, page}) => {
-    console.log(key);
+    //console.log(key);
     return ({
     ...state,
     loading: false,

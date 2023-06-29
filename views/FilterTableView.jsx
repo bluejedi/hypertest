@@ -78,6 +78,7 @@ const updateSave= (state, response) => ({
   });
 
 const updateEdit= (key, row) => (state) => {
+  //console.log()
   let forms = state[key].forms; 
   forms.edit = row;
   console.log(state[key].forms.edit);
@@ -192,17 +193,48 @@ const submitz = (state, {url, key}) => {
   //console.log(item);
   let item = state[key].forms.edit;
 
+//   {
+//   "genres": [
+//     {
+//       "id": "1",
+//       "name": "jav"
+//     },
+//     {
+//       "id": "2",
+//       "name": "ntr"
+//     }
+//   ],
+//   "id": 1,
+//   "imdb_id": null,
+//   "release_year": "1969",
+//   "runtime": 4,
+//   "story": "xxx",
+//   "title": "bener",
+//   "url": "http://localhost:8000/api/movies/1/"
+// }
+
   for(var k in item) {
       let v = item[k];
-      if(Array.isArray(v)) {
-          item[k] = v.map(x=> {
-              return {
-                  'id': x.id,
-                  'name': x.text
-              }
-          })
-      }
+      // if(Array.isArray(v)) {
+      //     item[k] = v.map(x=> {
+      //         return {
+      //             'id': x.id,
+      //             'name': x.text
+      //         }
+      //     })
+      // }
   }
+
+  if (key == 'movies') item.genres = [
+    {
+      "id": "1",
+      "name": "jav"
+    },
+    {
+      "id": "2",
+      "name": "ntr"
+    }
+  ]
 
   let saveUrl = '';
   let method = '';
@@ -234,28 +266,15 @@ const saveEdit = ({url, key}) => (state) =>
 // {
 // console.log(state);
 // return 
-[({
-  ...state, url: window.location,
-  //toasts: {...state.toasts, 
-  //items: [...state.toasts.items, {text:"Successfully saved!", style:"success"}]},
-  [key]: {...state[key],
-  forms: {...state[key].forms,
-  edit: null }}
-}), 
-submitz(state, {url: url, key: key})
-  // Http({
-  //   url: url,
-  //   options: {
-  //     method: 'POST',
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(state[key].forms.edit),
-  //   },
-  //   errorResponse: "json",
-  //   action: updateSave,
-  //   error: addErrors,
-  // })
+  [({
+    ...state, url: window.location,
+    //toasts: {...state.toasts, 
+    //items: [...state.toasts.items, {text:"Successfully saved!", style:"success"}]},
+    [key]: {...state[key],
+    forms: {...state[key].forms,
+    edit: null }}
+  }), 
+  submitz(state, {url: url, key: key})
 ]
 //};
 
@@ -277,12 +296,6 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
       <SearchForm
         formFields={formFields && state[key].forms.search && mergeValuesErrors(formFields, state[key].forms.search, state[key].forms.search.errors)}
         // updateFieldAction={(key, value)=>actions.updateField({formname: 'search', fieldname: key, value})}
-        updateFieldActionz={(keyz, value) => ({...state,  
-                [key]:{...state[key], 
-                    forms:{...state[key].forms, 
-                      search:{...state[key].forms.search,
-                       fieldname: keyz, value}}}
-                })}
         updateFieldAction={(keyz, valuez) => ({...state,  
           [key]:{...state[key],
             //loading: true,
@@ -326,14 +339,14 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
         })
       }
     saveAction={()=>saveEdit({url: window.g_urls[key], key: key})}
-    updateFieldAction={(keyz, value) => ({...state,  
+    updateFieldAction={(keyz, value) => { console.log(value); return ({...state,  
       [key]:{...state[key],
         //loading: true,
         forms:{...state[key].forms,
           edit:{...state[key].forms.edit,
             [keyz]: value
         }}}
-    })}
+    })}}
   />
   
   {extraViews?extraViews.map( ev => ev(state, actions)):null}

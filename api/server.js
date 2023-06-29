@@ -28,8 +28,8 @@ app.post('/api/jobs/', employees.postJobs);
 app.patch('/api/jobs/:id', employees.patchJobById);
 
 app.get('/api/movies/', employees.findAllMovie);
-app.post('/api/movies/', employees.postJobs);
-app.patch('/api/movies/:id', employees.patchJobById);
+app.post('/api/movies/', employees.postMovies);
+app.patch('/api/movies/:id', employees.patchMovieById);
 
 
 app.get('/api/persons/', employees.findAllPeople);
