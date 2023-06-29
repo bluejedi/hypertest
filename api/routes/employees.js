@@ -147,12 +147,12 @@ exports.postJobs = function (req, res, next) {
     res.send(pagina_wrapper(jobs));
 }
 
-exports.postData = function (req, res, next) {
+exports.postData = function (req, res, next, ent) {
     //var njobs = 
     let data = req.body;
     //console.log(data);
-    let newid = jobs.length + 1
-    jobs.push({url: `"http://localhost:8000/api/jobs/${newid}/"`, id: newid, name: data.name});
+    let newid = ent.length + 1
+    ent.push({url: `"http://localhost:8000/api/${ent}/${newid}/"`, id: newid, name: data.name});
     res.send(pagina_wrapper(jobs));
 }
 

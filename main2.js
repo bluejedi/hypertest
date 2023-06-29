@@ -62,6 +62,8 @@ const update=(state, {key, response, current, page}) => {
     ...state,
     loading: false,
     ukey: key,
+    toasts: {...state.toasts,
+            items:[]}, 
     [key]: {...state[key],
       loading: false,
       page,
@@ -79,15 +81,14 @@ const update=(state, {key, response, current, page}) => {
 const ouc = (state, url) => [
     { ...state,
         url: url, //mandatory
-        //ukey: url.pathname.slice(1) ,
-        toasts: {...state.toasts,
-            items:[]} 
     },
     dispatch => {
+      //console.log(url.pathname != '/home');
+      if(url.pathname != '/' && url.pathname != '/login' && url.pathname != '/logout') {  
       fetch(window.g_urls[url.pathname.slice(1)])
       .then(response => response.json())
       .then(data => dispatch([update, {key: url.pathname == 'people' ? 'persons' : url.pathname.slice(1), response: data, current: window.g_urls[state.url.pathname], page: 1}])) // <---
-    }
+    }}
   ];
 
 const our = (state, location) => [
