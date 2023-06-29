@@ -78,6 +78,20 @@ var peoples = [
         "name": "maria",
         "imdb_id": null,
         "birthday": "2023-06-12"
+    },
+    {
+        "url": "http://localhost:8000/api/persons/2/",
+        "id": 2,
+        "name": "emily",
+        "imdb_id": null,
+        "birthday": "2023-06-11"
+    },
+    {
+        "url": "http://localhost:8000/api/persons/3/",
+        "id": 3,
+        "name": "sarah",
+        "imdb_id": null,
+        "birthday": "2023-06-12"
     }
 ];
 
@@ -159,15 +173,18 @@ exports.findAllPeople = function (req, res, next) {
     var name = req.query.name;
     //todo add req query birthday
     var birthday = new Date(req.query.birthday).getTime();
-    console.log(birthday);
+    //console.log(birthday);
 
     if (name || birthday) {
         res.send(pagina_wrapper(peoples.filter(people => {
             //return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
-            console.log('param', birthday);
-            console.log('people', people.birthday);
+            //console.log('param', birthday);
+            //console.log('people', people.birthday);
             var t = new Date(people.birthday).getTime();
-            return t == birthday;
+            if (name && birthday) return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1 && t == birthday;
+            if (name) return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+            if (birthday) return t == birthday;
+            //return people
         })));
         // res.send(peoples.filter(function(people) {
         //     return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
