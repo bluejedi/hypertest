@@ -59,8 +59,8 @@ var pagina_wrapper = (entity) => ({
 
 var pagina = (page, entity) => {
     res = page? entity.slice((page-1) * perpage, (page * perpage) - 1) : entity.slice(0, perpage)
-    next = entity.length > perpage ? 'http://localhost:5000/api/jobs/?page=' + (+page + 1) : null
-    previous = entity.length > perpage && page > 1 ? 'http://localhost:5000/api/jobs/?page=' + (+page + -1) : null
+    next = entity.length > perpage ? `?page=${+page + 1}` : null
+    previous = entity.length > perpage && page > 1 ? '?page=' + (+page + -1) : null
 //console.log(entity);
     return ({
     "count": entity.length,
@@ -93,7 +93,8 @@ exports.findAllJob = function (req, res, next) {
     //res.send(pagina_wrapper(jobs));
 };
 
-var genres = [{"id":1,"name":"jav"}];
+var genres = [{"id":1,"name":"1"},{"id":2,"name":"2"},{"id":3,"name":"3"}
+,{"id":4,"name":"4"},{"id":5,"name":"5"},{"id":6,"name":"6"}];
 //var genres = {"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"jav"}]};
 
 var movies = [
@@ -135,6 +136,27 @@ var peoples = [
         "name": "sarah",
         "imdb_id": null,
         "birthday": "2023-06-12"
+    },
+    {
+        "url": "http://localhost:5000/api/persons/1/",
+        "id": 4,
+        "name": "4",
+        "imdb_id": null,
+        "birthday": "2023-06-12"
+    },
+    {
+        "url": "http://localhost:5000/api/persons/2/",
+        "id": 5,
+        "name": "5",
+        "imdb_id": null,
+        "birthday": "2023-06-11"
+    },
+    {
+        "url": "http://localhost:5000/api/persons/3/",
+        "id": 6,
+        "name": "6",
+        "imdb_id": null,
+        "birthday": "2023-06-12"
     }
 ];
 
@@ -164,22 +186,28 @@ exports.logout = function (req, res, next) {
 
 exports.findAllGenre = function (req, res, next) {
     //pagina_wrapper(jobs);
+    var page = req.query.page;
+    page = page? page : 1;
+
     var name = req.query.name;
     if (name) {
-        res.send(pagina_wrapper(genres.filter(function(genre) {
+        res.send(pagina(page, genres.filter(function(genre) {
             return (genre.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
         })));
         // res.send(genres.filter(function(genre) {
         //     return (genre.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
         // }));
     } else {
-        res.send(pagina_wrapper(genres));
+        res.send(pagina(page, genres));
     }
     //res.send(pagina_wrapper(jobs));
 };
 
 exports.findAllMovie = function (req, res, next) {
     //pagina_wrapper(jobs);
+    var page = req.query.page;
+    page = page? page : 1;
+
     var name = req.query.name;
     //todo add the rest req query params
     if (name) {
@@ -198,12 +226,14 @@ exports.findAllMovie = function (req, res, next) {
 exports.findAllPeople = function (req, res, next) {
     //pagina_wrapper(jobs);
     var name = req.query.name;
+    var page = req.query.page;
+    page = page? page : 1;
     //todo add req query birthday
     var birthday = new Date(req.query.birthday).getTime();
     //console.log(birthday);
 
     if (name || birthday) {
-        res.send(pagina_wrapper(peoples.filter(people => {
+        res.send(pagina(page, peoples.filter(people => {
             //return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
             //console.log('param', birthday);
             //console.log('people', people.birthday);
@@ -217,7 +247,7 @@ exports.findAllPeople = function (req, res, next) {
         //     return (people.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
         // }));
     } else {
-        res.send(pagina_wrapper(peoples));
+        res.send(pagina(page, peoples));
     }
     //res.send(pagina_wrapper(jobs));
 };
