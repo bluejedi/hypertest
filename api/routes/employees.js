@@ -220,9 +220,20 @@ exports.postData = function (req, res, next, ent) {
 
 exports.postGenres = function (req, res, next) {
     //var njobs = 
-    genres.push({id: '69', name: 'new genre'});
-    console.log(genres);
+    let data = req.body;
+    //console.log(data);
+    let newid = genres.length + 1
+    genres.push({id: newid, name: data.name});
     res.send(pagina_wrapper(genres));
+}
+
+exports.postPeoples = function (req, res, next) {
+    //var njobs = 
+    let data = req.body;
+    //console.log(data);
+    let newid = peoples.length + 1;
+    peoples.push({id: newid, url: `"http://localhost:8000/api/peoples/${newid}/"`, name: data.name, birthday: data.birthday});
+    res.send(pagina_wrapper(peoples));
 }
 
 exports.patchJobById = function(req, res, next) {
@@ -230,4 +241,18 @@ exports.patchJobById = function(req, res, next) {
     var id = req.params.id;
     jobs[id - 1] = data;
     res.send(pagina_wrapper(jobs));
+}
+
+exports.patchGenreById = function(req, res, next) {
+    let data = req.body;
+    var id = req.params.id;
+    genres[id - 1] = data;
+    res.send(pagina_wrapper(genres));
+}
+
+exports.patchPeopleById = function(req, res, next) {
+    let data = req.body;
+    var id = req.params.id;
+    peoples[id - 1] = data;
+    res.send(pagina_wrapper(peoples));
 }

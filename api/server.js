@@ -33,12 +33,12 @@ app.patch('/api/movies/:id', employees.patchJobById);
 
 
 app.get('/api/persons/', employees.findAllPeople);
-app.post('/api/persons/', employees.postJobs);
-app.patch('/api/persons/:id', employees.patchJobById);
+app.post('/api/persons/', employees.postPeoples);
+app.patch('/api/persons/:id', employees.patchPeopleById);
 
 app.get('/api/genres/', employees.findAllGenre);
-app.post('/api/genres/', employees.postJobs);
-app.patch('/api/genres/:id', employees.patchJobById);
+app.post('/api/genres/', employees.postGenres);
+app.patch('/api/genres/:id', employees.patchGenreById);
 
 app.post('/', (req, res) => {
     let data = req.body;
