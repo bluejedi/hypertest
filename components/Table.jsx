@@ -11,7 +11,7 @@ export const Row = ({ row, rowColumns, actions }) => <tr>
 //<tr>{rowFilters.map(z => <th>{z}</th>)}</tr>
 
 
-const Table = ({ rowHeaders, rowFilters, rowColumns, rows, actions }) => <div>
+const Table = ({ rowHeaders, rowFilters, rowColumns, rows, actions, actionsload, key}) => <div>
     <table class="table table-striped table-hover">
         <thead><tr>
             {rowHeaders.map(z => <th>{z}</th>)}</tr>
@@ -24,7 +24,7 @@ const Table = ({ rowHeaders, rowFilters, rowColumns, rows, actions }) => <div>
             }
         </tbody>
     </table>
-    <Pagination page={rows.page} next={rows.next} previous={rows.previous} //loadAction={actions.load} 
+    <Pagination page={rows.page} next={rows.next} previous={rows.previous} loadAction={actionsload} key={key} 
     />
 </div>
 

@@ -1,4 +1,5 @@
-//var rp201 = {"url":"http://localhost:8000/api/jobs/2/","id":2,"name":"j"};
+//var rp201 = {"url":"http://localhost:5000/api/jobs/2/","id":2,"name":"j"};
+var perpage = 5;
 var employees = [
     {"id": 0, "firstName": "James", "lastName": "King", "reports": 4, "title": "President and CEO", "department": "Corporate", "mobilePhone": "617-000-0001", "officePhone": "781-000-0001", "email": "jking@fakemail.com", "city": "Boston, MA", "pic": "James_King.jpg", "twitterId": "@fakejking", "blog": "http://coenraets.org"},
     {"id": 1, "firstName": "Julie", "lastName": "Taylor", "managerId": 0, "managerName": "James King", "reports": 2, "title": "VP of Marketing", "department": "Marketing", "mobilePhone": "617-000-0002", "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA", "pic": "Julie_Taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org"},
@@ -22,40 +23,82 @@ var err = {"name":["This field is required."]};
 var jobs = [
     {
         "id": 1,
-        "url": "http://localhost:8000/api/jobs/1/",
+        "url": "http://localhost:5000/api/jobs/1/",
         "name": "blow"
     },
     {
         "id": 2,
-        "url": "http://localhost:8000/api/jobs/2/",
+        "url": "http://localhost:5000/api/jobs/2/",
         "name": "job 2"
     }
-    //,
-    // {
-    //     "url": "http://localhost:8000/api/jobs/3/",
-    //     "id": 3,
-    //     "name": "job 3"
-    // },
-    // {
-    //     "url": "http://localhost:8000/api/jobs/4/",
-    //     "id": 4,
-    //     "name": "job 4"
-    // }
+    ,{
+        "url": "http://localhost:5000/api/jobs/3/",
+        "id": 3,
+        "name": "job 3"
+    },{
+        "url": "http://localhost:5000/api/jobs/4/",
+        "id": 4,
+        "name": "job 4"
+    },{
+        "url": "http://localhost:5000/api/jobs/5/",
+        "id": 5,
+        "name": "job 5"
+    },{
+        "url": "http://localhost:5000/api/jobs/6/",
+        "id": 6,
+        "name": "job 6"
+    }
 ];
 
 var pagina_wrapper = (entity) => ({
     "count": entity.length,
     "next": null,
     "previous": null,
-    "results": entity
-});
+    "results": entity.slice(0, perpage)
+})
+
+var pagina = (page, entity) => {
+    res = page? entity.slice((page-1) * perpage, (page * perpage) - 1) : entity.slice(0, perpage)
+    next = entity.length > perpage ? 'http://localhost:5000/api/jobs/?page=' + (+page + 1) : null
+    previous = entity.length > perpage && page > 1 ? 'http://localhost:5000/api/jobs/?page=' + (+page + -1) : null
+//console.log(entity);
+    return ({
+    "count": entity.length,
+    "next": next,
+    "previous": previous,
+    "results": res
+    //"results": entity.slice(0, perpage - 1)
+})
+};
+
+exports.findAllJob = function (req, res, next) {
+    var page = req.query.page;
+
+    page = page? page : 1;
+
+    //res.send(pagina(page, jobs));
+
+    //pagina_wrapper(jobs);
+    var name = req.query.name;
+    if (name) {
+        res.send(pagina(page, jobs.filter(function(job) {
+            return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        })));
+        // res.send(jobs.filter(function(job) {
+        //     return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
+        // }));
+    } else {
+        res.send(pagina(page, jobs));
+    }
+    //res.send(pagina_wrapper(jobs));
+};
 
 var genres = [{"id":1,"name":"jav"}];
 //var genres = {"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"jav"}]};
 
 var movies = [
     {
-        "url": "http://localhost:8000/api/movies/1/",
+        "url": "http://localhost:5000/api/movies/1/",
         "id": 1,
         "genres": [
             {
@@ -73,21 +116,21 @@ var movies = [
 
 var peoples = [
     {
-        "url": "http://localhost:8000/api/persons/1/",
+        "url": "http://localhost:5000/api/persons/1/",
         "id": 1,
         "name": "maria",
         "imdb_id": null,
         "birthday": "2023-06-12"
     },
     {
-        "url": "http://localhost:8000/api/persons/2/",
+        "url": "http://localhost:5000/api/persons/2/",
         "id": 2,
         "name": "emily",
         "imdb_id": null,
         "birthday": "2023-06-11"
     },
     {
-        "url": "http://localhost:8000/api/persons/3/",
+        "url": "http://localhost:5000/api/persons/3/",
         "id": 3,
         "name": "sarah",
         "imdb_id": null,
@@ -117,22 +160,6 @@ exports.login = function (req, res, next) {
 
 exports.logout = function (req, res, next) {
   res.send(logoutr);
-};
-
-exports.findAllJob = function (req, res, next) {
-    //pagina_wrapper(jobs);
-    var name = req.query.name;
-    if (name) {
-        res.send(pagina_wrapper(jobs.filter(function(job) {
-            return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
-        })));
-        // res.send(jobs.filter(function(job) {
-        //     return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
-        // }));
-    } else {
-        res.send(pagina_wrapper(jobs));
-    }
-    //res.send(pagina_wrapper(jobs));
 };
 
 exports.findAllGenre = function (req, res, next) {
@@ -205,7 +232,7 @@ exports.postJobs = function (req, res, next) {
     let data = req.body;
     //console.log(data);
     let newid = jobs.length + 1
-    jobs.push({url: `"http://localhost:8000/api/jobs/${newid}/"`, id: newid, name: data.name});
+    jobs.push({url: `"http://localhost:5000/api/jobs/${newid}/"`, id: newid, name: data.name});
     res.send(pagina_wrapper(jobs));
 }
 
@@ -214,7 +241,7 @@ exports.postData = function (req, res, next, ent) {
     let data = req.body;
     //console.log(data);
     let newid = ent.length + 1
-    ent.push({url: `"http://localhost:8000/api/${ent}/${newid}/"`, id: newid, name: data.name});
+    ent.push({url: `"http://localhost:5000/api/${ent}/${newid}/"`, id: newid, name: data.name});
     res.send(pagina_wrapper(jobs));
 }
 
@@ -232,7 +259,7 @@ exports.postPeoples = function (req, res, next) {
     let data = req.body;
     //console.log(data);
     let newid = peoples.length + 1;
-    peoples.push({id: newid, url: `"http://localhost:8000/api/peoples/${newid}/"`, name: data.name, birthday: data.birthday});
+    peoples.push({id: newid, url: `"http://localhost:5000/api/peoples/${newid}/"`, name: data.name, birthday: data.birthday});
     res.send(pagina_wrapper(peoples));
 }
 

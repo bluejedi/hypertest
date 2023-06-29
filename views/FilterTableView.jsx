@@ -11,14 +11,20 @@ import actions from "../actions/index.js";
 
 
 
-const load= (url, key) => (state, actions) => [
-    {...state, loading: true, url: window.location},
-    dispatch => {                           // <---
+const load= (url, key) => (state, actions) => { return [
+    //{...state, loading: true, url: window.location},
+    {...state, loading: true},
+    dispatch => {
       fetch(url)
       .then(response => response.json())
       .then(data => dispatch([update, {key, response: data, current: url, page: 1}])) // <---
     }
-  ];
+  ]};
+
+const changePage=(next, key)=>{
+  return dispatch=>load(next, key);
+}
+
 
   const saveEditz= (url, key) => (state, actions) => [
     {...state, loading: true, url: window.location},
@@ -43,7 +49,7 @@ const reset = (state, key) => [
     }
   ];
 
-const update= (state, {key, response, current, page}) => ({
+const update= (state, {key, response, current, page}) => { console.log(response); return ({
     ...state,
     loading: false,
     [key]: {...state[key],
@@ -55,7 +61,7 @@ const update= (state, {key, response, current, page}) => ({
       previous: response.previous,
       items: response.results
     }    
-  });
+  })};
 
 const updateSave= (state, response) => ({
     ...state,
@@ -300,8 +306,9 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
             forms:{...state[key].forms,
               edit:row
             }}
-        })
-      }
+        })}
+        actionsload={changePage}
+        key={key}
       />}
     </div>
   </div>

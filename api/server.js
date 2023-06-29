@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // CORS (Cross-Origin Resource Sharing) headers to support Cross-site HTTP requests
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "content-type, X-Custom-Header, X-Requested-With");
+    res.header("Access-Control-Allow-Headers", "content-type, Content-Type, X-Custom-Header, X-Requested-With");
     //res.header("Access-Control-Allow-Headers", "Accept");
     res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
     //res.header("Content-Type", "text/plain");

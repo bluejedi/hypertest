@@ -77,6 +77,7 @@ const update=(state, {key, response, current, page}) => {
 }
 
 const loadpage = (url) => {
+    //console.log(url);
     return dispatch => {
       //console.log(url.pathname != '/home');
       if(url.pathname != '/' && url.pathname != '/login' && url.pathname != '/logout') {  
