@@ -6,7 +6,7 @@ import { SpinnerSmall } from './Spinners.jsx'
 
 
 const renderField = (field, updateFieldAction ) => {
-  //console.log(field);
+  console.log(field);
   let ftype = undefined;
   switch(field.type) {
     case 'longtext': ftype = FormInputLong; break;

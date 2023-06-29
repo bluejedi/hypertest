@@ -33,7 +33,7 @@ const formFields = [
   {'key': 'release_year', 'label': 'Release Year', 'type': 'number'},
   {'key': 'runtime', 'label': 'Runtime', 'type': 'number'},
   {'key': 'story', 'label': 'Plot', 'type': 'longtext'},
-  {'key': 'genres', 'label': 'Genres', 'type': 'text', url: '/api/genres/'}, //temporary using type text caused of multiselect bug
+  {'key': 'genres', 'label': 'Genres', 'type': 'multiselect', url: '/api/genres/'}, //temporary using type text caused of multiselect bug
 ];
 
 const multiFormFields = [
@@ -68,7 +68,15 @@ const extraViews = [
     item={state.movies.forms.editPeople}
     hideAction={()=>updateEditPeople(null)}
     saveAction={()=>saveEditPeople({g_actions: g_actions, key: state.auth.key})}
-    updateFieldAction={(key, value)=>actions.updateField({formname: 'edit', fieldname: 'movies', value})}
+    //updateFieldAction={(key, value)=>updateField({formname: 'edit', fieldname: 'movies', value})}
+    updateFieldAction={(keyz, value) => { console.log(value); return ({...state,  
+      movies:{...state.movies,
+        //loading: true,
+        forms:{...state.movies.forms,
+          editPeople:{...state.movies.forms.editPeople,
+            [keyz]: value
+        }}}
+    })}}
   /></div>:null}</div>
 ]
 
