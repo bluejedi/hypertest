@@ -215,26 +215,27 @@ const submitz = (state, {url, key}) => {
 
   for(var k in item) {
       let v = item[k];
-      // if(Array.isArray(v)) {
-      //     item[k] = v.map(x=> {
-      //         return {
-      //             'id': x.id,
-      //             'name': x.text
-      //         }
-      //     })
-      // }
+      if(Array.isArray(v)) {
+          item[k] = v.map(x=> {
+              return {
+                  'id': x.id,
+                  //'name': x.text
+                  'name': x.name
+              }
+          })
+      }
   }
 
-  if (key == 'movies') item.genres = [
-    {
-      "id": "1",
-      "name": "jav"
-    },
-    {
-      "id": "2",
-      "name": "ntr"
-    }
-  ]
+  // if (key == 'movies') item.genres = [
+  //   {
+  //     "id": "1",
+  //     "name": "jav"
+  //   },
+  //   {
+  //     "id": "2",
+  //     "name": "ntr"
+  //   }
+  // ]
 
   let saveUrl = '';
   let method = '';
@@ -268,8 +269,8 @@ const saveEdit = ({url, key}) => (state) =>
 // return 
   [({
     ...state, url: window.location,
-    //toasts: {...state.toasts, 
-    //items: [...state.toasts.items, {text:"Successfully saved!", style:"success"}]},
+    toasts: {...state.toasts, 
+    items: [...state.toasts.items, {text:"Successfully saved!", style:"success"}]},
     [key]: {...state[key],
     forms: {...state[key].forms,
     edit: null }}

@@ -105,6 +105,10 @@ var movies = [
             {
                 "id": 1,
                 "name": "jav"
+            },
+            {
+              "id": 2,
+              "name": "ntr"
             }
         ],
         "title": "jajaja",
@@ -262,8 +266,12 @@ exports.postJobs = function (req, res, next) {
     let data = req.body;
     //console.log(data);
     let newid = jobs.length + 1
+
+    var page = req.query.page;
+    page = page? page : 1;
+
     jobs.push({url: `"http://localhost:5000/api/jobs/${newid}/"`, id: newid, name: data.name});
-    res.send(pagina_wrapper(jobs));
+    res.send(pagina(page, jobs));
 }
 
 exports.postMovies = function (req, res, next) {
@@ -288,7 +296,11 @@ exports.postMovies = function (req, res, next) {
         "story": data.story
     })
     //ent.push({url: `"http://localhost:5000/api/${ent}/${newid}/"`, id: newid, name: data.name});
-    res.send(pagina_wrapper(movies));
+    //res.send(pagina_wrapper(movies));
+    var page = req.query.page;
+    page = page? page : 1;
+
+    res.send(pagina(page, movies));
 }
 
 exports.postGenres = function (req, res, next) {
@@ -297,7 +309,9 @@ exports.postGenres = function (req, res, next) {
     //console.log(data);
     let newid = genres.length + 1
     genres.push({id: newid, name: data.name});
-    res.send(pagina_wrapper(genres));
+    var page = req.query.page;
+    page = page? page : 1;
+    res.send(pagina(page, genres));
 }
 
 exports.postPeoples = function (req, res, next) {
@@ -306,33 +320,43 @@ exports.postPeoples = function (req, res, next) {
     //console.log(data);
     let newid = peoples.length + 1;
     peoples.push({id: newid, url: `"http://localhost:5000/api/peoples/${newid}/"`, name: data.name, birthday: data.birthday});
-    res.send(pagina_wrapper(peoples));
+    var page = req.query.page;
+    page = page? page : 1;
+    res.send(pagina(page, peoples));
 }
 
 exports.patchJobById = function(req, res, next) {
     let data = req.body;
     var id = req.params.id;
     jobs[id - 1] = data;
-    res.send(pagina_wrapper(jobs));
+    var page = req.query.page;
+    page = page? page : 1;
+    res.send(pagina(page, jobs));
 }
 
 exports.patchGenreById = function(req, res, next) {
     let data = req.body;
     var id = req.params.id;
     genres[id - 1] = data;
-    res.send(pagina_wrapper(genres));
+    var page = req.query.page;
+    page = page? page : 1;
+    res.send(pagina(page, genres));
 }
 
 exports.patchPeopleById = function(req, res, next) {
     let data = req.body;
     var id = req.params.id;
     peoples[id - 1] = data;
-    res.send(pagina_wrapper(peoples));
+    var page = req.query.page;
+    page = page? page : 1;
+    res.send(pagina(page, peoples));
 }
 
 exports.patchMovieById = function(req, res, next) {
     let data = req.body;
     var id = req.params.id;
     movies[id - 1] = data;
-    res.send(pagina_wrapper(movies));
+    var page = req.query.page;
+    page = page? page : 1;
+    res.send(pagina(page, movies));
 }

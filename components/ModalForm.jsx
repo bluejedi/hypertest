@@ -3,7 +3,8 @@ import { FormInput, FormInputLong } from './FormInputs.jsx'
 import FormDateInput from './FormDateInput.jsx'
 import MultiSelect from './MultiSelect.jsx'
 import { SpinnerSmall } from './Spinners.jsx'
-
+// import DebugContainer from './DebugContainer.jsx';
+// {item && DebugContainer(item)}
 
 const renderField = (field, updateFieldAction ) => {
   console.log(field);

@@ -46,7 +46,7 @@ const routes = {
 const viewz = (state, props) => (
     h("main", {className: "container grid-xl p-2"}, [
        //NavBar({onlogout: okClick}),
-       h("main", {className: "p-2"}, [
+       h("main", {className: "hero p-2"}, [
             (routes[state.url.pathname] ?? routes["404"])(state, props),
        ]),
         ToastContainer({toasts: state.toasts}),
