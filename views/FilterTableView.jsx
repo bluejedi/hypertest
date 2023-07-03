@@ -26,56 +26,58 @@ const changePage=(next, key)=>{
 }
 
 
-  const saveEditz= (url, key) => (state, actions) => [
-    {...state, loading: true, url: window.location},
-    dispatch => {                           // <---
-      fetch(url)
-      .then(response => response.json())
-      .then(data => dispatch([update, {key, response: data, current: url, page: 1}])) // <---
-    }
-  ];
+const saveEditz= (url, key) => (state, actions) => [
+  {...state, loading: true, url: window.location},
+  dispatch => {                           // <---
+    fetch(url)
+    .then(response => response.json())
+    .then(data => dispatch([update, {key, response: data, current: url, page: 1}])) // <---
+  }
+];
 
 const reset = (state, key) => [
-    {...state,
-      loading: true,
-      [key]: {...state[key],
-        forms: {...state[key].forms,
-        search: {}}}
-    },
-    dispatch => {                           // <---
-      fetch(window.g_urls[key])
-      .then(response => response.json())
-      .then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) // <---
-    }
-  ];
+  {...state,
+    loading: true,
+    [key]: {...state[key],
+      forms: {...state[key].forms,
+      search: {}}}
+  },
+  dispatch => {                           // <---
+    fetch(window.g_urls[key])
+    .then(response => response.json())
+    .then(data => dispatch([update, {key, response: data, current: window.g_urls[key], page: 1}])) // <---
+  }
+];
 
 const update= (state, {key, response, current, page}) => { console.log(response); return ({
-    ...state,
+  ...state,
+  loading: false,
+  [key]: {...state[key],
+    // forms: {...state[key].forms,
+    // search: {}},
     loading: false,
-    [key]: {...state[key],
-      loading: false,
-      page,
-      current,
-      count: response.count,
-      next: response.next,
-      previous: response.previous,
-      items: response.results
-    }    
-  })};
+    page,
+    current,
+    count: response.count,
+    next: response.next,
+    previous: response.previous,
+    items: response.results
+  }    
+})};
 
 const updateSave= (state, response) => ({
-    ...state,
+  ...state,
+  loading: false,
+  [state.ukey]: {...state[state.ukey],
     loading: false,
-    [state.ukey]: {...state[state.ukey],
-      loading: false,
-      page: 1,
-      current: 'u',
-      count: response.count,
-      next: response.next,
-      previous: response.previous,
-      items: response.results
-    }    
-  });
+    page: 1,
+    current: 'u',
+    count: response.count,
+    next: response.next,
+    previous: response.previous,
+    items: response.results
+  }    
+});
 
 const updateEdit= (key, row) => (state) => {
   //console.log()
@@ -95,7 +97,7 @@ const filter=(state, key)=>{
   //console.log(state[key].forms.search);
   let params = Object.keys(state[key].forms.search).map(function(k, v) {
       //console.log(state[key].forms.search[k]);
-      return encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
+      return state[key].forms.search[k] !='' && encodeURIComponent(k) + '=' + encodeURIComponent(state[key].forms.search[k])
   }).join('&');
   //console.log(params);
   //actions.load(state.current.split('?')[0]+'?'+params);
@@ -115,36 +117,6 @@ export const fetchEffect = (dispatch, props) => {
   //         dispatch(props.error, result);
   //       })
   //       .catch(error => {
-  //         dispatch(props.error, error);
-  //       })
-  //   } else {
-  //     dispatch(props.error, error);
-  //   }
-  // })
-}
-
-function httpEffect(dispatch, props) {
-  return fetch(props.url, props.options)
-  .then(function(response) {
-    if (!response.ok) {
-      throw response
-    }
-    return response
-  })
-  .then(function(response) {
-    return response[props.response]()
-  })
-  .then(function(result) {
-    dispatch(props.action, result);
-  })
-  // .catch(function(error) {
-  //   if (props.errorResponse) {
-  //     console.log(props.errorResponse);
-  //     return error[props.errorResponse]()
-  //       .then(function(result) {
-  //         dispatch(props.error, result);
-  //       })
-  //       .catch(function(error) {
   //         dispatch(props.error, error);
   //       })
   //   } else {
@@ -192,26 +164,6 @@ export const FormError = (state, { errors }) => ({ ...state, inProgress: false, 
 const submitz = (state, {url, key}) => {
   //console.log(item);
   let item = state[key].forms.edit;
-
-//   {
-//   "genres": [
-//     {
-//       "id": "1",
-//       "name": "jav"
-//     },
-//     {
-//       "id": "2",
-//       "name": "ntr"
-//     }
-//   ],
-//   "id": 1,
-//   "imdb_id": null,
-//   "release_year": "1969",
-//   "runtime": 4,
-//   "story": "xxx",
-//   "title": "bener",
-//   "url": "http://localhost:8000/api/movies/1/"
-// }
 
   for(var k in item) {
       let v = item[k];
@@ -279,6 +231,7 @@ const saveEdit = ({url, key}) => (state) =>
 ]
 //};
 
+// for next row filter feature
 //const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) =>
 <Viewz key={state.auth.key} username={state.auth.username}>
@@ -288,7 +241,7 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     {state.auth.key?<button className="btn btn-primary btn-action btn-lg" onclick={updateEdit(key, ({}))}>
       <i className="icon icon-plus"></i>
     </button>:null}
-    <button className="btn btn-primary btn-action btn-lg" onclick={()=>load(window.g_urls[key], key)}>
+    <button className="btn btn-primary btn-action btn-lg" onclick={reset(state, key)}>
       <i className="icon icon-refresh"></i>
     </button>
   </h2>

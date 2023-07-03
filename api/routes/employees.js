@@ -116,7 +116,45 @@ var movies = [
         "release_year": "1969",
         "runtime": 4,
         "story": "xxx"
-    }
+    },
+    {
+        "url": "http://localhost:5000/api/movies/2/",
+        "id": 2,
+        "genres": [
+            {
+                "id": 1,
+                "name": "jav"
+            },
+            {
+              "id": 2,
+              "name": "ntr"
+            }
+        ],
+        "title": "lama",
+        "imdb_id": null,
+        "release_year": "1969",
+        "runtime": 120,
+        "story": "yy"
+    },
+    {
+        "url": "http://localhost:5000/api/movies/3/",
+        "id": 1,
+        "genres": [
+            {
+                "id": 1,
+                "name": "jav"
+            },
+            {
+              "id": 2,
+              "name": "ntr"
+            }
+        ],
+        "title": "baru",
+        "imdb_id": null,
+        "release_year": "2023",
+        "runtime": 120,
+        "story": "xxx"
+    },
 ];
 
 var peoples = [
@@ -211,19 +249,17 @@ exports.findAllMovie = function (req, res, next) {
     var filter = req.query;
     var page = req.query.page;
     page = page? page : 1;
-        
-        moviesr = movies.filter(function(movie) {
+  
+    var moviesr = movies;
+    for (var key in filter) {
+        moviesr = moviesr.filter(movie => {
+            console.log('movie key', movie[key])
+            console.log('movie key index filter key', movie[key].toLowerCase().indexOf(filter[key].toLowerCase()))
+            return movie[key].toLowerCase().indexOf(filter[key].toLowerCase()) > -1
+        })
+    }
 
-            for (var key in filter) {
-                //if return true movie included, false movie doesn/t include in new copied movies array
-                return(movie[key] === undefined 
-                    || filter[key] == '' 
-                    || (movie[key]).toLowerCase().indexOf(filter[key].toLowerCase()) > -1)
-            }
-            return true;
-        });
-
-        res.send(pagina(page, moviesr));
+    res.send(pagina(page, moviesr));
 };
 
 exports.findAllPeople = function (req, res, next) {
