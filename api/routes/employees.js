@@ -208,23 +208,22 @@ exports.findAllGenre = function (req, res, next) {
 };
 
 exports.findAllMovie = function (req, res, next) {
-    //pagina_wrapper(jobs);
+    var filter = req.query;
     var page = req.query.page;
     page = page? page : 1;
+        
+        moviesr = movies.filter(function(movie) {
 
-    var name = req.query.name;
-    //todo add the rest req query params
-    if (name) {
-        res.send(pagina_wrapper(movies.filter(function(movie) {
-            return (movie.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
-        })));
-        // res.send(movies.filter(function(movie) {
-        //     return (job.name).toLowerCase().indexOf(name.toLowerCase()) > -1;
-        // }));
-    } else {
-        res.send(pagina_wrapper(movies));
-    }
-    //res.send(pagina_wrapper(jobs));
+            for (var key in filter) {
+                //if return true movie included, false movie doesn/t include in new copied movies array
+                return(movie[key] === undefined 
+                    || filter[key] == '' 
+                    || (movie[key]).toLowerCase().indexOf(filter[key].toLowerCase()) > -1)
+            }
+            return true;
+        });
+
+        res.send(pagina(page, moviesr));
 };
 
 exports.findAllPeople = function (req, res, next) {
