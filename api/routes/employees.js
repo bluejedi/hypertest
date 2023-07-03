@@ -58,7 +58,8 @@ var pagina_wrapper = (entity) => ({
 })
 
 var pagina = (page, entity) => {
-    res = page? entity.slice((page-1) * perpage, (page * perpage) - 1) : entity.slice(0, perpage)
+    //res = page? entity.slice((page-1) * perpage, (page * perpage) - 1) : entity.slice(0, perpage)
+    res = page? entity.slice((page-1) * perpage, (page * perpage)) : entity.slice(0, perpage)
     next = entity.length > perpage ? `?page=${+page + 1}` : null
     previous = entity.length > perpage && page > 1 ? '?page=' + (+page + -1) : null
 //console.log(entity);
@@ -138,7 +139,7 @@ var movies = [
     },
     {
         "url": "http://localhost:5000/api/movies/3/",
-        "id": 1,
+        "id": 3,
         "genres": [
             {
                 "id": 1,
@@ -252,12 +253,15 @@ exports.findAllMovie = function (req, res, next) {
   
     var moviesr = movies;
     for (var key in filter) {
+        if (key == 'page') continue
         moviesr = moviesr.filter(movie => {
-            console.log('movie key', movie[key])
-            console.log('movie key index filter key', movie[key].toLowerCase().indexOf(filter[key].toLowerCase()))
+            //console.log('movie key', movie[key])
+            //console.log('movie key index filter key', movie[key].toLowerCase().indexOf(filter[key].toLowerCase()))
             return movie[key].toLowerCase().indexOf(filter[key].toLowerCase()) > -1
         })
     }
+    console.log(moviesr)
+    console.log(movies)
 
     res.send(pagina(page, moviesr));
 };
@@ -316,7 +320,7 @@ exports.postMovies = function (req, res, next) {
     let newid = movies.length + 1
     movies.push({
         "url": `"http://localhost:5000/api/movies/${newid}/"`,
-        "id": 1,
+        "id": newid,
         //todo refine genres currently using hardcode data still
         "genres": [
             {
