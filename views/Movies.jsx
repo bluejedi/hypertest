@@ -32,8 +32,8 @@ const formFields = [
   {'key': 'title', 'label': 'Title', 'type': 'text'},
   {'key': 'release_year', 'label': 'Release Year', 'type': 'number'},
   {'key': 'runtime', 'label': 'Runtime', 'type': 'number'},
-  {'key': 'story', 'label': 'Plot', 'type': 'longtext'},
-  {'key': 'genres', 'label': 'Genres', 'type': 'multiselect', url: '/api/genres/'}, //temporary using type text caused of multiselect bug
+  {'key': 'genres', 'label': 'Genres', 'type': 'multiselect'}, 
+  {'key': 'story', 'label': 'Plot', 'type': 'longtext'}
 ];
 
 const multiFormFields = [
@@ -84,7 +84,14 @@ const Movies = (state, props) =>FilterTableView({
   key: 'movies',
   rowHeaders,
   rowColumns,
-  formFields,
+  formFields: [
+    {'key': 'title', 'label': 'Title', 'type': 'text'},
+    {'key': 'release_year', 'label': 'Release Year', 'type': 'number'},
+    {'key': 'runtime', 'label': 'Runtime', 'type': 'number'},
+    {'key': 'genres', 'label': 'Genres', 'type': 'multiselect', 'gitems': state.gitems,
+      actions: (state, {response}) => ({...state, gitems: response.results})}, 
+    {'key': 'story', 'label': 'Plot', 'type': 'longtext'},
+  ],
   title: 'Movies list',
   extraViews,
   actions: (row) => updateEdit(row)

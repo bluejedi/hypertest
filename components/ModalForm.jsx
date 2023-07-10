@@ -7,7 +7,7 @@ import { SpinnerSmall } from './Spinners.jsx'
 // {item && DebugContainer(item)}
 
 const renderField = (field, updateFieldAction ) => {
-  console.log(field);
+  //console.log(field);
   let ftype = undefined;
   switch(field.type) {
     case 'longtext': ftype = FormInputLong; break;
@@ -27,8 +27,9 @@ const renderFields = (fields,  updateFieldAction) => fields.map(
 )
 
 const ModalForm = ({ loading, formFields, item, hideAction, saveAction, updateFieldAction }) => 
-<div className={`modal ${item?'active':''}`}>
-  <div class="modal-overlay"></div>
+<div className={`modal modal ${item?'active':''}`}>
+  <a href="#close" onclick={hideAction} class="modal-overlay" aria-label="Close"></a>
+  
   <div class="modal-container">
     <div class="modal-header">
       <button class="btn btn-clear float-right" onclick={hideAction}></button>

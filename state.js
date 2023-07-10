@@ -16,13 +16,16 @@ const genericState = {
 const existingAuth = getExistingAuth()
 
 const state = {
+  gitems: [{id: 1, 'name': 'ccc'}],
   ukey: 'home',
-  movies: Object.assign({}, genericState, {
+  movies: Object.assign({}, {
     showPlot: false,
     forms: Object.assign({}, genericState['forms'], {
       editPeople: null
     })
-  }),
+  },
+  genericState,
+  ),
   jobs: Object.assign({}, genericState),
   auth: {
     key: existingAuth.key,

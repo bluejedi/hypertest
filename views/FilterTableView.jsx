@@ -8,6 +8,7 @@ import { mergeValuesErrors } from '../util/forms.js';
 import { checkAuth } from '../util/auth';
 import Viewz from "./Layout.jsx";
 import actions from "../actions/index.js";
+import MultiSelect from '../components/MultiSelect.jsx'
 
 
 
@@ -24,6 +25,30 @@ const load= (url, key) => (state, actions) => { return [
 const changePage=(next, key)=>{
   return dispatch=>load(next, key);
 }
+
+const  updateG= ({response, current, page}) => state => ({
+    ...state,
+    loading: false,
+    page,
+    current,
+    count: response.count,
+    next: response.next,
+    previous: response.previous,
+    items: response.results
+  })
+
+// const updateEdit= (key, row) => (state) => {
+//   //console.log()
+//   let forms = state[key].forms; 
+//   forms.edit = row;
+//   console.log(state[key].forms.edit);
+// return ({
+//   ...state,
+//   loading: true,
+//   [key]: {...state[key],
+//     forms: {...state[key].forms}},
+//     edit: forms.edit
+// })};
 
 
 const saveEditz= (url, key) => (state, actions) => [
@@ -49,7 +74,8 @@ const reset = (state, key) => [
   }
 ];
 
-const update= (state, {key, response, current, page}) => { console.log(response); return ({
+const update= (state, {key, response, current, page}) => { //console.log(response); 
+  return ({
   ...state,
   loading: false,
   [key]: {...state[key],
@@ -231,6 +257,30 @@ const saveEdit = ({url, key}) => (state) =>
 ]
 //};
 
+const loadMs= (url, act) => {
+        //console.log(act);
+        return dispatch => {
+          //console.log(url.pathname != '/home');
+          // if(url.pathname != '/' && url.pathname != '/login' && url.pathname != '/logout') {  
+          fetch(url)
+          .then(response => response.json())
+          .then(data => dispatch([act, {key: 'movies', response: data, current: '', page: 1}])) // <---
+        }//}
+    };
+
+const act = (state, {key, response, current, page}) => ({
+        ...state,
+        //[key]: {...state[key],
+        // loading: false,
+        // page,
+        // current,
+        // count: response.count,
+        // next: response.next,
+        // previous: response.previous,
+        gitems: response.results
+      //}
+      })
+
 // for next row filter feature
 //const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
 const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) =>
@@ -246,6 +296,19 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     </button>
   </h2>
   <div className="columns">
+  
+  {MultiSelect({
+    key: "genres", 
+    label: "Genres", 
+    field: {
+      type: "multiselect",
+      'gitems': state.gitems,
+      value: [ {id: 1, name:'jav'}, {id: 2, name:'ntr'} ],
+      actions: act
+    },
+    //action: (val) => updateFieldAction(field.key, val)
+  })}
+
     <div className="column col-lg-12" oncreate={()=>load(window.g_urls[key], key)}>
       <SearchForm
         formFields={formFields && state[key].forms.search && mergeValuesErrors(formFields, state[key].forms.search, state[key].forms.search.errors)}
@@ -279,10 +342,11 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
       />}
     </div>
   </div>
+
   
     <ModalForm
     loading={state[key].loading}
-    formFields={formFields && state[key].forms.edit && mergeValuesErrors(formFields, state[key].forms.edit, state[key].forms.edit.errors)}
+    formFields={formFields && state[key].forms.edit && mergeValuesErrors(formFields, state[key].forms.edit, state[key].forms.edit.errors, state.gitems)}
     item={state[key].forms.edit}
     hideAction={(row) => ({...state,  
           [key]:{...state[key],
@@ -293,7 +357,8 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
         })
       }
     saveAction={()=>saveEdit({url: window.g_urls[key], key: key})}
-    updateFieldAction={(keyz, value) => { console.log(value); return ({...state,  
+    updateFieldAction={(keyz, value) => { //console.log(value); 
+      return ({...state,  
       [key]:{...state[key],
         //loading: true,
         forms:{...state[key].forms,
@@ -301,6 +366,13 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
             [keyz]: value
         }}}
     })}}
+
+    updateMsAction={(value) => { return [
+      { ...state,
+          loading: true, //mandatory
+      },
+      loadMs(`http://localhost:5000/api/genres/?name=${e.target.value}`, field.actions)
+    ]}}
   />
   
   {extraViews?extraViews.map( ev => ev(state, actions)):null}

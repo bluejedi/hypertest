@@ -10,11 +10,12 @@
 //     ));
 // }
 
-export const mergeValuesErrors = (formFields, item, errors) => {
+export const mergeValuesErrors = (formFields, item, errors, gitems) => {
     //console.log(formFields);
-    //console.log(item);
+    //console.log(gitems);
     return formFields.map(f => Object.assign({}, f, {
-        'value': item[f.key]
+        'value': item[f.key],
+        'gitems': gitems
     }, errors?{
         'errors': errors[f.key]
     }:{}
