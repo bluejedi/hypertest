@@ -102,7 +102,7 @@ const MultiSelect = ({label, field, action, act}) =>
         </div>
         {field.gitems && <ul class="menu">
             { field.gitems.map(v => 
-              <li class="menu-item" data-id={v.id}><button type="buton" class="btn btn-primary btn-block text-left" onclick = {(_, e) => {
+              <li class="menu-item" data-id={v.id}><button type="buton" class="btn btn-block bg-secondary btn-link text-left" onclick = {(_, e) => {
                     e.preventDefault();
                     //console.log(e);
                     let newv = field.value.concat({id: v.id, name: v.name})
