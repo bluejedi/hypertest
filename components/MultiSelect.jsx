@@ -66,19 +66,12 @@ const MultiSelect = ({label, field, action, act}) =>
               </div>
         </div>
         <ul class="menu">
-          <li class="menu-item"><a href="#autocomplete">
-          <div class="tile tile-centered">
-              <div class="tile-icon"></div>
-              <div class="tile-content">
-                  
-              </div>
-            </div></a></li>
             { field.gitems.map(v => 
               <li class="menu-item" data-id={v.id}><button type="buton" class="btn" onclick = {(_, e) => {
                     e.preventDefault();
                     //console.log(e);
-                    let newval = field.value.concat({id: v.id, name: v.name})
-                    return action(newval)
+                    let newv = field.value.concat({id: v.id, name: v.name})
+                    return action(newv)
                     //e.preventDefault();
                 }}>
               <div class="tile tile-centered">

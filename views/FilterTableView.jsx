@@ -376,8 +376,7 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
         //  [2]: {...state[key].items[2],
             [keyz]: value
         }}}
-    });
-      console.log('masuk engga', state[key].forms.edit);
+    })
     }}
   />
   
