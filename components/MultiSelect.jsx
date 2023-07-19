@@ -20,11 +20,10 @@ const load= (url, act) => {
     }
 };
 
-// const update = (state, {response}) => { console.log(state); return ({
-//     ...state,
-//     value: "ooo"
-//     //"movies": {...state["movies"], gitems: response.results}}
-// })}
+const update = (state, {response}) => { console.log(state); this.loading = false; return ({
+    ...state,
+    "movies": {...state["movies"], gitems: response.results}}
+)}
 
 const Stateful = (Component, state) => 
  Component.bind(state || Component.state || {})
@@ -58,19 +57,23 @@ function onBlur(state){
 // }
 
 function Input(props, children){
-  return h('input', {
+  return h('div', {class:"has-icon-left"}, [
+    h('input', {
       class: "form-input", type: "text",  
       onfocus: onFocus.bind(this),
       onblur: onBlur.bind(this),
       oninput: props.onInput.bind(this),
+      //update: update.bind(this),
       value: this.value
-    })
+    }),
+    this.loading && h('i', {class:"form-icon loading"})
+  ])
 }
 
 // Exposing initial component state
-Input.state = { focused: false, value:"" }
+Input.state = { focused: false, value:"", loading: false }
 
-const InputBox1 = Stateful(Input, {focused: true, value: ""})
+const InputBox1 = Stateful(Input, {focused: true, value: "", loading: false})
 
 const MultiSelect = ({label, field, action, act}) =>
     <div class="form-group">
@@ -87,18 +90,21 @@ const MultiSelect = ({label, field, action, act}) =>
                 } }
                 ></button>
                 </span>)}
-              <div class="has-icon-left">
+              
                 {h(InputBox1, {focused: true, value:"",
-                    onInput: function (state, e) { this.value = e.target.value; return [
+                    onInput: function (state, e) { this.loading= true; this.value = e.target.value; return [
                         { ...state,
                             loading: true, //mandatory
                             //gitems: gitems,
                         },
-                        load(`http://localhost:5000/api/genres/?name=${e.target.value}`, field.act)
+                        load(`http://localhost:5000/api/genres/?name=${e.target.value}`, (state, {response}) => { 
+                            console.log(state); this.loading = false; return ({
+                            ...state,
+                            "movies": {...state["movies"], gitems: response.results}}
+                        )})
                       ]} 
                 })}
-                <i class="form-icon loading"></i>
-              </div>
+                
         </div>
         {field.gitems && <ul class="menu">
             { field.gitems.map(v => 
