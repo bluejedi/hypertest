@@ -84,17 +84,10 @@ const Movies = (state, props) =>FilterTableView({
   key: 'movies',
   rowHeaders,
   rowColumns,
-  formFields: [
-    {'key': 'title', 'label': 'Title', 'type': 'text'},
-    {'key': 'release_year', 'label': 'Release Year', 'type': 'number'},
-    {'key': 'runtime', 'label': 'Runtime', 'type': 'number'},
-    {'key': 'genres', 'label': 'Genres', 'type': 'multiselect', 'gitems': state.gitems,
-      actions: (state, {response}) => ({...state, gitems: response.results})}, 
-    {'key': 'story', 'label': 'Plot', 'type': 'longtext'},
-  ],
+  formFields: formFields,
   title: 'Movies list',
   extraViews,
-  actions: (row) => updateEdit(row)
+  //actions: (row) => updateEdit(row)
 })
 
 export default Movies;

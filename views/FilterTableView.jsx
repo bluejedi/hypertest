@@ -270,16 +270,27 @@ const loadMs= (url, act) => {
 
 const act = (state, {key, response, current, page}) => ({
         ...state,
-        //[key]: {...state[key],
+        [key]: {...state[key],
         // loading: false,
         // page,
         // current,
         // count: response.count,
         // next: response.next,
         // previous: response.previous,
-        gitems: response.results
-      //}
+           gitems: response.results
+        }
       })
+
+const actDel = (state, genres) => ({
+  ...state,
+    [key]: {...state[key],
+      forms: {...state[key].forms,
+        edit: {...state[key].forms.edit,
+          genres: genres
+        }
+      }
+  }
+})
 
 // for next row filter feature
 //const FilterTableView = ({key, actions, rowHeaders, rowFilters, rowColumns, formFields, title, extraViews}) => (state, actions, g_actions) => 
@@ -296,18 +307,6 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     </button>
   </h2>
   <div className="columns">
-  
-  {MultiSelect({
-    key: "genres", 
-    label: "Genres", 
-    field: {
-      type: "multiselect",
-      'gitems': state.gitems,
-      value: [ {id: 1, name:'jav'}, {id: 2, name:'ntr'} ],
-      actions: act
-    },
-    //action: (val) => updateFieldAction(field.key, val)
-  })}
 
     <div className="column col-lg-12" oncreate={()=>load(window.g_urls[key], key)}>
       <SearchForm
@@ -343,36 +342,43 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     </div>
   </div>
 
-  
+  <p>{console.log(state[key].forms.edit)}</p>
     <ModalForm
     loading={state[key].loading}
-    formFields={formFields && state[key].forms.edit && mergeValuesErrors(formFields, state[key].forms.edit, state[key].forms.edit.errors, state.gitems)}
+    formFields={formFields && state[key].forms.edit && 
+      mergeValuesErrors(formFields
+        , state[key].forms.edit
+        , state[key].forms.edit.errors
+        , state[key].gitems
+        , (state, {response}) => ({
+        ...state,
+        [key]: {...state[key], gitems: response.results}})
+        , key
+      )}
     item={state[key].forms.edit}
-    hideAction={(row) => ({...state,  
+    hideAction={(row) => { console.log('triggered'); return({...state,  
           [key]:{...state[key],
             //loading: true,
             forms:{...state[key].forms,
               edit:null
             }}
-        })
+        })}
       }
     saveAction={()=>saveEdit({url: window.g_urls[key], key: key})}
-    updateFieldAction={(keyz, value) => { //console.log(value); 
+    updateFieldAction={(keyz, value) => { //console.log(keyz); console.log(state[key].forms.edit); 
       return ({...state,  
       [key]:{...state[key],
-        //loading: true,
+        loading: true,
+        gitems: value,
         forms:{...state[key].forms,
           edit:{...state[key].forms.edit,
+        //items: {...state[key].items,
+        //  [2]: {...state[key].items[2],
             [keyz]: value
         }}}
-    })}}
-
-    updateMsAction={(value) => { return [
-      { ...state,
-          loading: true, //mandatory
-      },
-      loadMs(`http://localhost:5000/api/genres/?name=${e.target.value}`, field.actions)
-    ]}}
+    });
+      console.log('masuk engga', state[key].forms.edit);
+    }}
   />
   
   {extraViews?extraViews.map( ev => ev(state, actions)):null}

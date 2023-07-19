@@ -28,7 +28,7 @@ const People = FilterTableView({
   rowColumns,
   formFields,
   title: 'People list',
-  actions: (row) => updateEdit(row)
+  //actions: (row) => updateEdit(row)
 })
 
 export default People;

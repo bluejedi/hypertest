@@ -49,7 +49,7 @@ const SimpleFilterTableView = (state, props) => FilterTableView({
     rowColumns,
     formFields,
     title: props.title,
-    actions: (row) => updateEdit(row)
+    //actions: (row) => updateEdit(row)
   })
 
 export default SimpleFilterTableView;

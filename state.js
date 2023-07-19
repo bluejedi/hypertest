@@ -16,9 +16,10 @@ const genericState = {
 const existingAuth = getExistingAuth()
 
 const state = {
-  gitems: [{id: 1, 'name': 'ccc'}],
+  gitems: [],
   ukey: 'home',
   movies: Object.assign({}, {
+    gitems: [],
     showPlot: false,
     forms: Object.assign({}, genericState['forms'], {
       editPeople: null

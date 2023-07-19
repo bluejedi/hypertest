@@ -21,6 +21,9 @@ const Viewz = (props, content) => <div>
       </section>
       <section class="navbar-section"></section>
     </header>
+
+    {content}
+    
     <section class="profile">
     {props.key?<details class="accordion">
         <summary class="accordion-header">            
@@ -69,8 +72,6 @@ const Viewz = (props, content) => <div>
         </details>}        
     
     </section>
-
-    {content}
 </div>
 
 export default Viewz;
