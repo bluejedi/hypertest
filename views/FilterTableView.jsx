@@ -109,7 +109,7 @@ const updateEdit= (key, row) => (state) => {
   //console.log()
   let forms = state[key].forms; 
   forms.edit = row;
-  console.log(state[key].forms.edit);
+  //console.log(state[key].forms.edit);
 return ({
   ...state,
   loading: true,
@@ -341,8 +341,7 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
       />}
     </div>
   </div>
-
-  <p>{console.log(state[key].forms.edit)}</p>
+  
     <ModalForm
     loading={state[key].loading}
     formFields={formFields && state[key].forms.edit && 
