@@ -368,8 +368,8 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
     updateFieldAction={(keyz, value) => { //console.log(keyz); console.log(state[key].forms.edit); 
       return ({...state,  
       [key]:{...state[key],
-        loading: true,
-        gitems: value,
+        loading: false,
+        //gitems: value,
         forms:{...state[key].forms,
           edit:{...state[key].forms.edit,
         //items: {...state[key].items,

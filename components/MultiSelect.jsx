@@ -44,11 +44,11 @@ const MultiSelect = ({label, field, action, act}) =>
             {field.value && field.value.map(v => 
                 <span class="chip" data-id={v.id}>{v.name}
                 <button type="button" class="btn btn-clear" onclick = {(_, e) => {
-                    //e.preventDefault();
+                    e.preventDefault();
                     //console.log(e);
                     let newval = field.value.filter(n => n.id != v.id )
                     return action(newval)
-                    e.preventDefault();
+                    //e.preventDefault();
                 } }
                 ></button>
                 </span>)}
@@ -74,13 +74,19 @@ const MultiSelect = ({label, field, action, act}) =>
               </div>
             </div></a></li>
             { field.gitems.map(v => 
-              <li class="menu-item"><a href="#autocomplete">
+              <li class="menu-item" data-id={v.id}><button type="buton" class="btn" onclick = {(_, e) => {
+                    e.preventDefault();
+                    //console.log(e);
+                    let newval = field.value.concat({id: v.id, name: v.name})
+                    return action(newval)
+                    //e.preventDefault();
+                }}>
               <div class="tile tile-centered">
                   <div class="tile-icon"></div>
                   <div class="tile-content">
                       {v.name}
                   </div>
-                </div></a></li>
+                </div></button></li>
               )}      
         </ul>
       </div>
