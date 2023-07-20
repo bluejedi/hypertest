@@ -1,4 +1,4 @@
-//import { h } from 'hyperapp'
+import { text } from 'hyperapp'
 /*
 <input class="form-input" type="text" placeholder="" value=""
                     //oninput= {(_,e) => load(`http://localhost:5000/api/genres/?name=${e.target.value}`, field.actions)}
@@ -20,10 +20,8 @@ const load= (url, act) => {
     }
 };
 
-const update = (state, {response}) => { console.log(state); this.loading = false; return ({
-    ...state,
-    "movies": {...state["movies"], gitems: response.results}}
-)}
+// from  @sergey-shpak sergey-shpak/hyperapp-stateful-component-example.js
+// https://gist.github.com/sergey-shpak/dffb81833fa060ec81d5830a9a039f82
 
 const Stateful = (Component, state) => 
  Component.bind(state || Component.state || {})
@@ -69,11 +67,32 @@ function Input(props, children){
     this.loading && h('i', {class:"form-icon loading"})
   ])
 }
+let citems = []
+
+function Ilist(props, children) {
+    return <ul class="menu">
+    { citems.map(v => 
+      <li class="menu-item" data-id={v.id}><button type="buton" class="btn btn-block bg-secondary btn-link text-left" onclick = {(_, e) => {
+            e.preventDefault();
+            //console.log(e);
+            let newv = props.valz.concat({id: v.id, name: v.name})
+            return props.actionz(newv)
+            //e.preventDefault();
+        }}>
+      <div class="tile tile-centered">
+          <div class="tile-icon"></div>
+          <div class="tile-content">
+              {v.name}
+          </div>
+        </div></button></li>
+      )}      
+    </ul>   
+}
 
 // Exposing initial component state
-Input.state = { focused: false, value:"", loading: false }
+Input.state = { focused: false, value:"", loading: false, itemz:[] }
 
-const InputBox1 = Stateful(Input, {focused: true, value: "", loading: false})
+const InputBox1 = Stateful(Input, {focused: true, value: "", loading: false, itemz:[{id: 1, name: 'hc'},{id: 2, name: 'gb'}]})
 
 const MultiSelect = ({label, field, action, act}) =>
     <div class="form-group">
@@ -97,32 +116,17 @@ const MultiSelect = ({label, field, action, act}) =>
                             loading: true, //mandatory
                             //gitems: gitems,
                         },
-                        load(`http://localhost:5000/api/genres/?name=${e.target.value}`, (state, {response}) => { 
-                            console.log(state); this.loading = false; return ({
-                            ...state,
-                            "movies": {...state["movies"], gitems: response.results}}
+                        load(`${field.url}=${e.target.value}`, (state, {response}) => { 
+                            //console.log(state);
+                            citems = response.results
+                            this.loading = false; return ({
+                            ...state}
                         )})
                       ]} 
                 })}
                 
         </div>
-        {field.gitems && <ul class="menu">
-            { field.gitems.map(v => 
-              <li class="menu-item" data-id={v.id}><button type="buton" class="btn btn-block bg-secondary btn-link text-left" onclick = {(_, e) => {
-                    e.preventDefault();
-                    //console.log(e);
-                    let newv = field.value.concat({id: v.id, name: v.name})
-                    return action(newv)
-                    //e.preventDefault();
-                }}>
-              <div class="tile tile-centered">
-                  <div class="tile-icon"></div>
-                  <div class="tile-content">
-                      {v.name}
-                  </div>
-                </div></button></li>
-              )}      
-        </ul>}
+        {h(Ilist, {valz: field.value, actionz: action})}
       </div>
     </div>
 

@@ -160,7 +160,7 @@ export const assign = (source, assignments) => {
 }
 
 export const Http = (props) => {
-  console.log(props);
+  //console.log(props);
   return [
     fetchEffect,
     assign(
@@ -341,21 +341,19 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
       />}
     </div>
   </div>
-  
+
     <ModalForm
     loading={state[key].loading}
     formFields={formFields && state[key].forms.edit && 
       mergeValuesErrors(formFields
         , state[key].forms.edit
         , state[key].forms.edit.errors
-        , state[key].gitems
-        , (state, {response}) => ({
-        ...state,
-        [key]: {...state[key], gitems: response.results}})
+        , 'http://localhost:5000/api/genres/?name'
         , key
       )}
     item={state[key].forms.edit}
-    hideAction={(row) => { console.log('triggered'); return({...state,  
+    hideAction={(row) => { //console.log('triggered'); 
+      return({...state,  
           [key]:{...state[key],
             //loading: true,
             forms:{...state[key].forms,
@@ -368,11 +366,8 @@ const FilterTableView = ({key, actions, rowHeaders, rowColumns, formFields, titl
       return ({...state,  
       [key]:{...state[key],
         loading: false,
-        //gitems: value,
         forms:{...state[key].forms,
           edit:{...state[key].forms.edit,
-        //items: {...state[key].items,
-        //  [2]: {...state[key].items[2],
             [keyz]: value
         }}}
     })
